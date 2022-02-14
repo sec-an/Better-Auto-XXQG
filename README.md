@@ -17,11 +17,12 @@
 4. ……
 
 ## Todo
-1. 完善整体逻辑
-2. 更多机型适配、局部优化调整
-3. UI美化
-4. 文档完善
-5. ……
+1. 可能考虑转AutoX.js
+2. 完善整体逻辑
+3. 更多机型适配、局部优化调整
+4. UI美化
+5. 文档完善
+6. ……
 
 ## 参考项目
 [zhuxuedefeng / AiQiangGUO](https://github.com/zhuxuedefeng/AiQiangGUO)
