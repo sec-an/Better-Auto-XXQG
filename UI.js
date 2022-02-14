@@ -63,7 +63,6 @@ ui.study.click(function () {
     toast("开始积分判断运行");
     thread = threads.start(function () {
         let url = [
-            'https://gitee.com/sec-an/better-auto-js/raw/master/helper.js',
             'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/helper.js',
             'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/helper.js',
             'https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/helper.js'
