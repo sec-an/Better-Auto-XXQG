@@ -48,17 +48,16 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
 
     // 本地频道1分
     id("home_bottom_tab_button_work").findOnce().click(); // "学习"页
-    delay(0.5);
+    delay(1);
     className("android.widget.TextView").text("综合").findOne().parent().parent().child(3).click(); // 地方频道
-    delay(0.5);
+    delay(1);
     if (my_scores['本地频道'] != 1) {
         className('android.widget.LinearLayout').clickable(true).depth(26).waitFor();
-        delay(1);
+        delay(2);
         className('android.widget.LinearLayout').clickable(true).depth(26).findOne().click();
-        while (!id("home_bottom_tab_button_work").exists()) {
-            back();
-            delay(1);
-        }
+        delay(2);
+        back();
+        delay(1);
     }
 
     // 选读文章12分
