@@ -39,9 +39,9 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
         } else if (text("电台").exists()) {
             text("电台").findOnce().parent().parent().parent().click();
         }
-        delay(0.5);
+        delay(1);
         text("听广播").findOnce().parent().click();
-        delay(0.5);
+        delay(1);
         id("v_paused").findOnce().click(); // 播放按钮
         radio_on = 1;
     }
@@ -63,7 +63,7 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
     // 选读文章12分
     while (articles_to_learn) {
         id("home_bottom_tab_button_work").findOnce().click(); // "学习"键刷新文章列表
-        delay(0.5);
+        delay(1);
         let scroll_down = 10;
         let h = device.height; // 屏幕高
         let w = device.width; // 屏幕宽
@@ -80,7 +80,7 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
         let cnt = 2;
         for (var i = 0; i < current_page_articles.length; i++) {
             if (!articles_to_learn) break;
-            delay(0.5);
+            delay(1);
             try {
                 current_page_articles[i].parent().parent().parent().click();
             } catch (error) {
@@ -94,14 +94,14 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
             // 分享2分
             if (my_scores["分享"] != 1 && cnt--) {
                 id('BOTTOM_LAYER_VIEW_ID').findOnce().child(1).click();
-                delay(0.5);
+                delay(1);
                 text("分享到学习强国").findOnce().parent().click();
-                delay(0.5);
+                delay(1);
                 back();
-                delay(0.5);
+                delay(1);
             }
             back();
-            delay(0.5);
+            delay(1);
         }
         get_scores();
     }
@@ -113,18 +113,18 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
         } else if (text("电台").exists()) {
             text("电台").findOnce().parent().parent().parent().click();
         }
-        delay(0.5);
+        delay(1);
         text("听广播").findOnce().parent().click();
-        delay(0.5);
+        delay(1);
         id("v_playing").findOnce().click(); // 暂停按钮
     }
 
     // 视听学习6分
     while (videos_to_watch) {
         id("home_bottom_tab_button_ding").findOnce().click(); // "百灵"页
-        delay(0.5);
+        delay(1);
         text("竖").findOnce().parent().click(); // 竖
-        delay(0.5);
+        delay(1);
         className('android.widget.FrameLayout').clickable(true).depth(24).findOne().click(); // 点击第一个视频
         delay(1);
         if (text('继续播放').exists()) click('继续播放');
@@ -166,7 +166,7 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
         let time = textStartsWith("今日").findOnce().text().match(/\d+/);
         console.hide();
         for (var i = time; i <= 2; i++) {
-            delay(0.5);
+            delay(1);
             text('开始比赛').findOnce().click();
             do_contest();
             if (i == 1) {
@@ -179,7 +179,7 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
         // 回退返回主页 
         while (!id("home_bottom_tab_button_work").exists()) {
             back();
-            delay(0.5);
+            delay(1);
         }
     }
 
@@ -200,17 +200,17 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
             className("android.view.View").text("").findOne().click();
         }
         do_contest();
-        delay(0.5);
+        delay(1);
         back();
-        delay(0.5);
+        delay(1);
         back();
-        delay(0.5);
+        delay(1);
         text('退出').findOnce().click();
         // 回退返回主页
         console.show();
         while (!id("home_bottom_tab_button_work").exists()) {
             back();
-            delay(0.5);
+            delay(1);
         }
     }
 
@@ -234,7 +234,7 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
         text('确认').findOnce().click();
         delay(1);
         back();
-        delay(0.5);
+        delay(1);
     }
 
     // 每日答题
@@ -255,7 +255,7 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
                 } else {
                     console.log("每日答题结束！返回主页！")
                     text("返回").click();
-                    delay(0.5);
+                    delay(1);
                     back();
                     delay(1);
                     back();
@@ -332,9 +332,9 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
                 } else if (text("查看解析").exists()) {
                     console.log("每周答题结束，返回！")
                     back();
-                    delay(0.5);
+                    delay(1);
                     back();
-                    delay(0.5);
+                    delay(1);
                     break;
                 } else if (text("再来一组").exists()) {
                     console.log("每周答题结束，返回！")
@@ -355,7 +355,7 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
             // 回退返回主页 
             while (!id("home_bottom_tab_button_work").exists()) {
                 back();
-                delay(0.5);
+                delay(1);
             }
         }
     }
@@ -431,9 +431,9 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
                 } else if (text("查看解析").exists()) {
                     console.log("专项答题结束，返回！")
                     back();
-                    delay(0.5);
+                    delay(1);
                     back();
-                    delay(0.5);
+                    delay(1);
                     back();
                     delay(1);
                     while (!textContains("我要答题").exists()) {
@@ -461,7 +461,7 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
             //回退返回主页 
             while (!id("home_bottom_tab_button_work").exists()) {
                 back();
-                delay(0.5);
+                delay(1);
             }
         }
     }
