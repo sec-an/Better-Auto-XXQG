@@ -3,7 +3,9 @@
 /********************************************UI部分***********************************************/
 ui.layout(
     <vertical>
-        <text textSize="18sp" textColor="red" text="AiQiangGuo Ver1.0" />
+        <appbar>
+                <toolbar id="toolbar" bg="#ff4fb3ff" title="强国助手" />
+        </appbar>
         <text textSize="15sp" layout_gravity="center" textColor="black" text="百度AK" />
         <input id="AK" text="" />
         <text textSize="15sp" layout_gravity="center" textColor="black" text="百度SK" />
@@ -15,7 +17,18 @@ ui.layout(
     </vertical>
 );
 
+importClass(java.net.HttpURLConnection);
+importClass(java.net.URL);
+importClass(java.io.File);
+importClass(java.io.FileOutputStream);
+
 http.__okhttp__.setTimeout(10000);
+
+var apkurl = "http://cdn.sec-an.cn/Better-Auto-XXQG/%E5%BC%BA%E5%9B%BD%E5%8A%A9%E6%89%8B_v1.0.0.apk";
+
+// if (app.versionName != "1.0.0") {
+//     checkversion();
+// }
 
 var storage = storages.create("BAIDUAPI");
 // storage.clear();
@@ -61,6 +74,7 @@ ui.study.click(function () {
         return;
     }
     toast("开始积分判断运行");
+    var UI = "";
     thread = threads.start(function () {
         let url = [
             'http://cdn.sec-an.cn/Better-Auto-XXQG/helper.js',
@@ -73,16 +87,16 @@ ui.study.click(function () {
                 let res = http.get(url[i]);
                 console.log(res.statusCode);
                 if (res.statusCode == 200) {
-                    var UI = res.body.string();
-                    break;
+                    UI = res.body.string();
+                    thread.interrupt();
                 } else {
                     toast('助手脚本:地址' + i + '下载失败');
                     console.log('助手脚本:地址' + i + '下载失败');
                 }
             } catch (error) {}
         }
-        engines.execScript("UI", UI);
     });
+    engines.execScript("UI", UI);
 });
 
 ui.stop.click(function () {
@@ -100,3 +114,63 @@ ui.about.click(function () {
         "强国助手"
     )
 });
+
+function checkversion() {
+    var releaseNotes = "版本 v1.0.1\n" +
+      "更新日志:\n" +
+      "* 修复 若干Bug\n";
+    dialogs.build({
+      title: "发现新版本",
+      content: releaseNotes,
+      positive: "立即下载",
+      negative: "取消",
+      cancelable: false
+    }).on("positive", download).show();
+  }
+  //打开下载进度面板
+  function download() {
+    downloadDialog = dialogs.build({
+      title: "正在下载...",
+      progress: {
+        max: 100,
+        showMinMax: true
+      },
+      autoDismiss: false,
+      cancelable: false
+    }).show();
+    //执行下载
+    startDownload();
+  }
+  //下载apk的主方法体
+  function startDownload() {
+    threads.start(function () {
+      var path = files.cwd() + "/new.apk";
+      let apkFile = new File(path);
+      var conn = new URL(apkurl).openConnection();
+      conn.connect();
+      let is = conn.getInputStream();
+      let length = conn.getContentLength();
+      let fos = new FileOutputStream(apkFile);
+      let count = 0;
+      let buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
+      while (true) {
+        var p = ((count / length) * 100);
+        let numread = is.read(buffer);
+        count += numread;
+        // 下载完成
+        if (numread < 0) {
+          toast("下载完成");
+          downloadDialog.dismiss();
+          downloadDialog = null;
+          break;
+        }
+        // 更新进度条
+        downloadDialog.setProgress(p);
+        fos.write(buffer, 0, numread);
+      }
+      fos.close();
+      is.close();
+      //自动打开进行安装
+      app.viewFile(path);
+    })
+  }
