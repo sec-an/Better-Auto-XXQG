@@ -73,11 +73,8 @@ ui.study.click(function () {
         alert("注意", "脚本正在运行，请结束之前进程");
         return;
     }
-    toast("开始积分判断运行");
-    var UI = "";
-    thread = threads.start(function () {
+    threads.start(function () {
         let url = [
-            'http://cdn.sec-an.cn/Better-Auto-XXQG/helper.js',
             'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/helper.js',
             'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/helper.js',
             'https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/helper.js'
@@ -85,18 +82,18 @@ ui.study.click(function () {
         for (var i = 0; i < url.length; i++) {
             try {
                 let res = http.get(url[i]);
-                console.log(res.statusCode);
+                console.log(i + ":" + res.statusCode);
                 if (res.statusCode == 200) {
-                    UI = res.body.string();
-                    thread.interrupt();
+                    var helper = res.body.string();
+                    break;
                 } else {
-                    toast('助手脚本:地址' + i + '下载失败');
-                    console.log('助手脚本:地址' + i + '下载失败');
+                    toastLog()('助手脚本:地址' + i + '下载失败');
                 }
             } catch (error) {}
         }
+        toastLog("开始积分判断运行");
+        engines.execScript("强国助手", helper);
     });
-    engines.execScript("UI", UI);
 });
 
 ui.stop.click(function () {
