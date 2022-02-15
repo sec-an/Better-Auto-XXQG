@@ -24,11 +24,11 @@ importClass(java.io.FileOutputStream);
 
 http.__okhttp__.setTimeout(10000);
 
-var apkurl = "http://cdn.sec-an.cn/Better-Auto-XXQG/%E5%BC%BA%E5%9B%BD%E5%8A%A9%E6%89%8B_v1.0.0.apk";
+var apkurl = "https://gitee.com/sec-an/js/attach_files/967567/download/110.apk";
 
-// if (app.versionName != "1.0.0") {
-//     checkversion();
-// }
+if (app.versionName != "1.1.0") {
+    checkversion();
+}
 
 var storage = storages.create("BAIDUAPI");
 // storage.clear();
@@ -75,6 +75,7 @@ ui.study.click(function () {
     }
     threads.start(function () {
         let url = [
+            'https://gitee.com/sec-an/js/raw/master/helper.js',
             'http://cdn.sec-an.cn/Better-Auto-XXQG/helper.js',
             'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/helper.js',
             'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/helper.js',
@@ -114,61 +115,62 @@ ui.about.click(function () {
 });
 
 function checkversion() {
-    var releaseNotes = "版本 v1.0.1\n" +
-      "更新日志:\n" +
-      "* 修复 若干Bug\n";
+    var releaseNotes = "版本 v1.1.0\n" +
+        "更新日志:\n" +
+        "* 使用AutoX重新打包\n" +
+        "* 增加对PaddleOCR的支持\n";
     dialogs.build({
-      title: "发现新版本",
-      content: releaseNotes,
-      positive: "立即下载",
-      negative: "取消",
-      cancelable: false
+        title: "发现新版本",
+        content: releaseNotes,
+        positive: "立即下载",
+        negative: "取消",
+        cancelable: false
     }).on("positive", download).show();
-  }
-  //打开下载进度面板
-  function download() {
+}
+//打开下载进度面板
+function download() {
     downloadDialog = dialogs.build({
-      title: "正在下载...",
-      progress: {
-        max: 100,
-        showMinMax: true
-      },
-      autoDismiss: false,
-      cancelable: false
+        title: "正在下载...",
+        progress: {
+            max: 100,
+            showMinMax: true
+        },
+        autoDismiss: false,
+        cancelable: false
     }).show();
     //执行下载
     startDownload();
-  }
-  //下载apk的主方法体
-  function startDownload() {
+}
+//下载apk的主方法体
+function startDownload() {
     threads.start(function () {
-      var path = files.cwd() + "/new.apk";
-      let apkFile = new File(path);
-      var conn = new URL(apkurl).openConnection();
-      conn.connect();
-      let is = conn.getInputStream();
-      let length = conn.getContentLength();
-      let fos = new FileOutputStream(apkFile);
-      let count = 0;
-      let buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
-      while (true) {
-        var p = ((count / length) * 100);
-        let numread = is.read(buffer);
-        count += numread;
-        // 下载完成
-        if (numread < 0) {
-          toast("下载完成");
-          downloadDialog.dismiss();
-          downloadDialog = null;
-          break;
+        var path = files.cwd() + "/new.apk";
+        let apkFile = new File(path);
+        var conn = new URL(apkurl).openConnection();
+        conn.connect();
+        let is = conn.getInputStream();
+        let length = conn.getContentLength();
+        let fos = new FileOutputStream(apkFile);
+        let count = 0;
+        let buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
+        while (true) {
+            var p = ((count / length) * 100);
+            let numread = is.read(buffer);
+            count += numread;
+            // 下载完成
+            if (numread < 0) {
+                toast("下载完成");
+                downloadDialog.dismiss();
+                downloadDialog = null;
+                break;
+            }
+            // 更新进度条
+            downloadDialog.setProgress(p);
+            fos.write(buffer, 0, numread);
         }
-        // 更新进度条
-        downloadDialog.setProgress(p);
-        fos.write(buffer, 0, numread);
-      }
-      fos.close();
-      is.close();
-      //自动打开进行安装
-      app.viewFile(path);
+        fos.close();
+        is.close();
+        //自动打开进行安装
+        app.viewFile(path);
     })
-  }
+}
