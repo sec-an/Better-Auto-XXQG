@@ -29,7 +29,7 @@ console.show(); //部分华为手机console有bug请注释本行
 app.launchApp('学习强国');
 get_scores();
 
-while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 || my_scores['视听学习时长'] != 6 || my_scores['每日答题'] != 5 || my_scores['挑战答题'] != 6 || my_scores["四人赛"] < 3 || my_scores["双人对战"] < 1 || my_scores['发表观点'] != 1 || my_scores['本地频道'] != 1) {
+while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 || my_scores['视听学习时长'] != 6 || my_scores['每日答题'] != 5 || my_scores['挑战答题'] != 6 || (token && (my_scores["四人赛"] < 3 || my_scores["双人对战"] < 1)) || my_scores['发表观点'] != 1 || my_scores['本地频道'] != 1) {
 
     // 打开电台广播 for 试听学习时长6分 与选读文章同时进行
     media.pauseMusic(); // 暂停音乐播放
