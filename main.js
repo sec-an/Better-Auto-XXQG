@@ -3,6 +3,7 @@ console.clear();
 http.__okhttp__.setTimeout(10000);
 
 let url = [
+    'https://gitee.com/sec-an/js/raw/master/UI.js',
     'http://cdn.sec-an.cn/Better-Auto-XXQG/UI.js',
     'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/UI.js',
     'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/UI.js',
@@ -12,13 +13,12 @@ let url = [
 for (var i = 0; i < url.length; i++) {
     try {
         let res = http.get(url[i]);
-        console.log(res.statusCode);
+        console.log(i + ":" + res.statusCode);
         if (res.statusCode == 200) {
             var UI = res.body.string();
-            break;
+            if (UI.indexOf('"ui";') == 0) break;
         } else {
-            toast('UI脚本:地址' + i + '下载失败');
-            console.log('UI脚本:地址' + i + '下载失败');
+            toastLog()('UI脚本:地址' + i + '下载失败');
         }
     } catch (error) {}
 }
