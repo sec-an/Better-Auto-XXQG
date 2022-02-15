@@ -1,16 +1,15 @@
 "ui";
 
-/********************************************UI部分***********************************************/
 ui.layout(
     <vertical>
         <appbar>
-                <toolbar id="toolbar" bg="#ff4fb3ff" title="强国助手" />
+                <toolbar id="toolbar" title="强国助手" />
         </appbar>
-        <text textSize="15sp" layout_gravity="center" textColor="black" text="百度AK" />
-        <input id="AK" text="" />
-        <text textSize="15sp" layout_gravity="center" textColor="black" text="百度SK" />
-        <input id="SK" text="" />
-        <button id="baidu" h="50" text="检查AK、SK" />
+        <text textSize="18sp" gravity="center" textColor="black" text="百度智能云 文字识别 API Key" />
+        <input id="AK" gravity="center" text="" />
+        <text textSize="18sp" gravity="center" textColor="black" text="百度智能云 文字识别 Secret Key" />
+        <input id="SK" gravity="center" text="" />
+        <button id="baidu" h="50" text="保存AK、SK，并检查正确性" />
         <button id="study" h="50" text="开始学习" />
         <button id="stop" h="50" text="停止运行" />
         <button w="250" layout_gravity="center" id="about" text="使用说明" />
@@ -24,8 +23,8 @@ importClass(java.io.FileOutputStream);
 
 http.__okhttp__.setTimeout(10000);
 
+// 版本更新检查
 var apkurl = "https://gitee.com/sec-an/js/attach_files/967567/download/110.apk";
-
 if (app.versionName != "1.1.0") {
     checkversion();
 }
@@ -124,8 +123,14 @@ function checkversion() {
         content: releaseNotes,
         positive: "立即下载",
         negative: "取消",
+        neutral: "到浏览器下载",
         cancelable: false
-    }).on("positive", download).show();
+    })
+    .on("positive", download)
+    .on("neutral", () => {
+        app.openUrl(apkurl);
+    })
+    .show();
 }
 //打开下载进度面板
 function download() {
