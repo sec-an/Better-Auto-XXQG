@@ -3,6 +3,8 @@
 
 更快的速度，更高的分数，更多的Star~
 
+初次运行，因软件权限（联网权限、无障碍服务、悬浮窗等）可能导致脚本加载失败，建议给予相应权限后再次尝试运行~
+
 强国助手_v1.0.0 下载：
 
 [Github Release](https://github.com/sec-an/Better-Auto-XXQG/releases/tag/v1.0.0)
