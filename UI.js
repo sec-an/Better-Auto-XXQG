@@ -75,6 +75,7 @@ ui.study.click(function () {
     }
     threads.start(function () {
         let url = [
+            'http://cdn.sec-an.cn/Better-Auto-XXQG/helper.js',
             'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/helper.js',
             'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/helper.js',
             'https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/helper.js'
