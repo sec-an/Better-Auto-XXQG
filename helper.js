@@ -15,7 +15,7 @@ threads.start(function () {
     var beginBtn;
     if (beginBtn = classNameContains("Button").textContains("开始").findOne(1000));
     else(beginBtn = classNameContains("Button").textContains("允许").findOne(1000));
-    beginBtn.click();
+    if (beginBtn) beginBtn.click();
 });
 
 if (!requestScreenCapture()) { // 请求截图权限for OCR
