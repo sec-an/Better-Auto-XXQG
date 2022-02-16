@@ -14,7 +14,6 @@ ui.layout(
         <horizontal>
             <button id="autoservice" margin="5 15" padding="15" layout_weight="1" textSize="18sp" textColor="red" text="①点击授权" />
             <button id="floaty" margin="5 15" padding="15" layout_weight="1" textSize="18sp" textColor="red" text="②点击授权" />
-            <button id="scap" margin="5 15" padding="15" layout_weight="1" textSize="18sp" textColor="red" text="③点击授权" />
         </horizontal>
         <text textSize="20sp" margin="20" gravity="center" textColor="black" text="四人赛、双人对抗 模式选择" />
         <radiogroup margin="5 0 5 0">
@@ -56,7 +55,6 @@ http.__okhttp__.setTimeout(10000);
 
 check_autoservice();
 check_floaty();
-check_scap();
 
 var BAIDUAPI = storages.create("BAIDUAPI");
 var CONFIG = storages.create("CONFIG");
@@ -93,18 +91,6 @@ ui.autoservice.click(function () {
 
 ui.floaty.click(function () {
     check_floaty();
-});
-
-ui.scap.click(function () {
-    threads.start(function () {
-        if (!requestScreenCapture()) {
-            toast("请求截图失败");
-        } else {
-            ui.run(() => {
-                ui.scap.visibility = 8;
-            });
-        }
-    });
 });
 
 ui.ocr_offline.on("check", (checked) => {
@@ -174,7 +160,9 @@ ui.study.click(function () {
 });
 
 ui.stop.click(function () {
-    execution.getEngine().forceStop();
+    if (execution) {
+        execution.getEngine().forceStop();
+    }
 });
 
 ui.update.click(function () {
@@ -211,26 +199,6 @@ function check_floaty() {
     } else {
         ui.floaty.visibility = 8;
     }
-}
-
-function check_scap() {
-    threads.shutDownAll();
-    threads.start(function () {
-        threads.start(function () {
-            var beginBtn;
-            sleep(500);
-            if (beginBtn = classNameContains("Button").textContains("开始").findOne(1000));
-            else(beginBtn = classNameContains("Button").textContains("允许").findOne(1000));
-            if (beginBtn) beginBtn.click();
-        });
-        if (!requestScreenCapture()) {
-            toast("请求截图失败");
-        } else {
-            ui.run(() => {
-                ui.scap.visibility = 8;
-            });
-        }
-    });
 }
 
 function check_baidu_api() {
