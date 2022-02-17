@@ -142,7 +142,9 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
     while (articles_to_learn) {
         console.info("准备选读文章...");
         back_to_home();
-        if (id("home_bottom_tab_button_work").exists()) {
+        if (className("android.widget.TextView").text("要闻").exists()) {
+            className("android.widget.TextView").text("要闻").findOne().parent().parent().child(3).click(); // 地方频道
+        } else if (id("home_bottom_tab_button_work").exists()) {
             id("home_bottom_tab_button_work").findOnce().click(); // "学习"键刷新文章列表
         } else if (text("工作").exists()) {
             my_click("工作");
