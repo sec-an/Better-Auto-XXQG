@@ -99,7 +99,11 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
             }
             delay(3 * DEFAULT_DELAY);
             swipe(x, h1, x, h2, 500);
-            if (!id('BOTTOM_LAYER_VIEW_ID').exists()) continue;
+            if (!id('BOTTOM_LAYER_VIEW_ID').exists()) {
+                back();
+                delay(DEFAULT_DELAY);
+                continue;
+            }
             let seconds = 60 + random(0, 5);
             for (var j = 0; j < seconds; j++) {
                 sleep(1000);
@@ -148,8 +152,9 @@ while (my_scores['我要选读文章'] != 12 || my_scores['视听学习'] != 6 |
         id("home_bottom_tab_button_ding").findOnce().click(); // "百灵"页
         delay(DEFAULT_DELAY);
         text("竖").findOnce().parent().click(); // 竖
-        delay(DEFAULT_DELAY);
-        className('android.widget.FrameLayout').clickable(true).depth(24).findOne().click(); // 点击第一个视频
+        delay(2 * DEFAULT_DELAY);
+        text("").waitFor();
+        text("").findOnce().parent().parent().parent().parent().child(0).click();
         delay(DEFAULT_DELAY);
         if (text('继续播放').exists()) click('继续播放');
         if (text('刷新重试').exists()) click('刷新重试');
