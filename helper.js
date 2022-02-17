@@ -1,3 +1,4 @@
+auto.waitFor();
 device.keepScreenDim(); // 保持屏幕常亮
 
 var my_scores = {}; // 已学习积分
