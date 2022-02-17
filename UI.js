@@ -11,33 +11,30 @@ ui.layout(
         <appbar>
                 <toolbar id="toolbar" title="{{unescape('%u5F3A%u56FD%u52A9%u624B')}}" />
         </appbar>
-        <horizontal>
-            <button id="floaty" margin="5 15" padding="15" layout_weight="1" textSize="18sp" textColor="red" text="点击授权" />
-        </horizontal>
-        <text textSize="20sp" margin="20" gravity="center" textColor="black" text="四人赛、双人对抗 模式选择" />
+        <text textSize="18sp" margin="20" gravity="center" textColor="black" text="四人赛、双人对抗 模式选择" />
         <radiogroup margin="5 0 5 0">
             <horizontal>
                 <radio id="ocr_offline" gravity="center" textSize="15sp" />
                 <radio id="ocr_online" gravity="center" textSize="15sp" />
             </horizontal>
         </radiogroup>
-        <text id="apikey" margin="0 30 0 0" textSize="20sp" gravity="center" textColor="black" text="文字识别 API Key" />
+        <text id="apikey" margin="0 10 0 0" textSize="16sp" gravity="center" textColor="black" text="文字识别 API Key" />
         <input id="AK" margin="0 10 0 0" gravity="center" text="" />
-        <text id="secretkey" margin="0 20 0 0" textSize="20sp" gravity="center" textColor="black" text="文字识别 Secret Key" />
+        <text id="secretkey" margin="0 10 0 0" textSize="16sp" gravity="center" textColor="black" text="文字识别 Secret Key" />
         <input id="SK" margin="0 10 0 0" gravity="center" text="" />
         <horizontal>
-            <button id="register" margin="20 20 10 0" layout_weight="1" h="50" text="点击注册百度智能云" />
-            <button id="baidu" margin="10 20 20 0" layout_weight="1" h="50" text="检查AK、SK" />
+            <button id="register" margin="20 10 10 0" layout_weight="1" h="50" text="点击注册百度智能云" />
+            <button id="baidu" margin="10 10 20 0" layout_weight="1" h="50" text="检查AK、SK" />
         </horizontal>
         <horizontal>
-            <text margin="20 30 0 0" textSize="16sp" textColor="black" text="默认延迟:" />
-            <spinner id="defaultdelay" margin="0 30 0 0" entries="1秒|2秒|3秒"/>
-            <text margin="0 30 0 0" textSize="16sp" textColor="black" text="OCR延迟:" />
-            <spinner id="ocrdelay" margin="0 30 20 0" entries="0毫秒|100毫秒|200毫秒|300毫秒|400毫秒|500毫秒"/>
+            <text margin="20 10 0 0" textSize="14sp" textColor="black" text="默认延迟:" />
+            <spinner id="defaultdelay" margin="0 10 0 0" entries="1秒|2秒|3秒"/>
+            <text margin="0 10 0 0" textSize="14sp" textColor="black" text="OCR延迟:" />
+            <spinner id="ocrdelay" margin="0 10 20 0" entries="0毫秒|100毫秒|200毫秒|300毫秒|400毫秒|500毫秒"/>
         </horizontal>
         <horizontal>
-            <button id="stop" margin="20 30 10 0" layout_weight="1" h="120" bg="#FDE6E0" textSize="30sp" />
-            <button id="study" margin="10 30 20 0" layout_weight="1" h="120" bg="#C7EDCC" textSize="30sp" />
+            <button id="stop" margin="20 20 10 0" layout_weight="1" h="120" bg="#FDE6E0" textSize="30sp" />
+            <button id="study" margin="10 20 20 0" layout_weight="1" h="120" bg="#C7EDCC" textSize="30sp" />
         </horizontal>
         <button w="250" h="60" margin="0 20 0 0" layout_gravity="center" id="update" textSize="18sp" />
     </vertical>
@@ -45,14 +42,12 @@ ui.layout(
 
 ui.study.setText("开 始\n学 习");
 ui.stop.setText("结 束\n运 行");
-ui.ocr_offline.setText("PaddleOCR\n无需注册、本地识别\n准确率较低、速度中等\n视CPU而异");
-ui.ocr_online.setText("百度智能云\n注册简单、在线识别\n准确率较高、速度较快\n免费额度、个人够用");
+ui.ocr_offline.setText("PaddleOCR");
+ui.ocr_online.setText("百度智能云");
 online_ocr_visibility(8);
 ui.update.visibility = 8;
 
 http.__okhttp__.setTimeout(10000);
-
-check_floaty();
 
 var BAIDUAPI = storages.create("BAIDUAPI");
 var CONFIG = storages.create("CONFIG");
@@ -82,10 +77,6 @@ if (CONFIG.get("NO_UPDATE", 0) && (app.versionName != latest_version)) {
 }
 
 var thread = null;
-
-ui.floaty.click(function () {
-    check_floaty();
-});
 
 ui.ocr_offline.on("check", (checked) => {
     if (checked) {
@@ -127,6 +118,7 @@ ui.study.click(function () {
     if (!CONFIG.get("OCR", 0) || BAIDUAPI.get("AK", "")) {
         threads.start(function () {
             let url = [
+                'https://sp.sec-an.cn/storage01/xxqg/helper.js',
                 'https://gitee.com/sec-an/js/raw/master/helper.js',
                 'http://cdn.sec-an.cn/Better-Auto-XXQG/helper.js',
                 'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/helper.js',
@@ -175,15 +167,6 @@ function online_ocr_visibility(i) {
     ui.SK.visibility = i;
     ui.register.visibility = i;
     ui.baidu.visibility = i;
-}
-
-function check_floaty() {
-    if (!floaty.checkPermission()) {
-        toast("本脚本需要悬浮窗权限来显示悬浮窗，请在随后的界面中允许并重新运行本脚本。");
-        floaty.requestPermission();
-    } else {
-        ui.floaty.visibility = 8;
-    }
 }
 
 function check_baidu_api() {
