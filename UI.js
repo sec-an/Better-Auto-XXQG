@@ -12,8 +12,7 @@ ui.layout(
                 <toolbar id="toolbar" title="{{unescape('%u5F3A%u56FD%u52A9%u624B')}}" />
         </appbar>
         <horizontal>
-            <button id="autoservice" margin="5 15" padding="15" layout_weight="1" textSize="18sp" textColor="red" text="①点击授权" />
-            <button id="floaty" margin="5 15" padding="15" layout_weight="1" textSize="18sp" textColor="red" text="②点击授权" />
+            <button id="floaty" margin="5 15" padding="15" layout_weight="1" textSize="18sp" textColor="red" text="点击授权" />
         </horizontal>
         <text textSize="20sp" margin="20" gravity="center" textColor="black" text="四人赛、双人对抗 模式选择" />
         <radiogroup margin="5 0 5 0">
@@ -53,7 +52,6 @@ ui.update.visibility = 8;
 
 http.__okhttp__.setTimeout(10000);
 
-check_autoservice();
 check_floaty();
 
 var BAIDUAPI = storages.create("BAIDUAPI");
@@ -84,10 +82,6 @@ if (CONFIG.get("NO_UPDATE", 0) && (app.versionName != latest_version)) {
 }
 
 var thread = null;
-
-ui.autoservice.click(function () {
-    check_autoservice();
-});
 
 ui.floaty.click(function () {
     check_floaty();
@@ -181,15 +175,6 @@ function online_ocr_visibility(i) {
     ui.SK.visibility = i;
     ui.register.visibility = i;
     ui.baidu.visibility = i;
-}
-
-function check_autoservice() {
-    if (auto.service == null) {
-        toast("请开启脚本的无障碍服务");
-        auto.waitFor();
-    } else {
-        ui.autoservice.visibility = 8;
-    }
 }
 
 function check_floaty() {
