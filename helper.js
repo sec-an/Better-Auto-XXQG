@@ -637,13 +637,11 @@ function exam_weekly() {
     let x = (w / 3) * 2; // 横坐标2/3
     let h1 = (h / 6) * 5; // 纵坐标5/6
     let h2 = (h / 6); // 纵坐标1/6
-    while (!text('本月').exists()) {
-        back_to_home();
-        my_click("我的");
-        my_click('我要答题');
-        my_click('每周答题');
-        text('本月').waitFor();
-    }
+    back_to_home();
+    my_click("我的");
+    my_click('我要答题');
+    my_click('每周答题');
+    textContains('月').waitFor();
     let n = 6;
     let flag = 0;
     do {
