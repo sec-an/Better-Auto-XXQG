@@ -9,7 +9,7 @@ importClass(android.graphics.Color);
 ui.layout(
     <vertical>
         <appbar>
-                <toolbar id="toolbar" title="{{unescape('%u5F3A%u56FD%u52A9%u624B')}}" />
+                <toolbar id="toolbar" title="{{decodeURI('%E5%AD%A6%E4%B9%A0%E5%BC%BA%E5%9B%BD')}}" />
         </appbar>
         <text textSize="18sp" margin="20" gravity="center" textColor="black" text="四人赛、双人对抗 模式选择" />
         <radiogroup margin="5 0 5 0">
@@ -67,8 +67,8 @@ ui.defaultdelay.setSelection(CONFIG.get("DEFAULT_DELAY", 0));
 ui.ocrdelay.setSelection(CONFIG.get("OCR_DELAY", 0));
 
 // 版本更新检查
-var apkurl = "https://gitee.com/sec-an/js/attach_files/968866/download/v1.1.1.apk";
-var latest_version = "1.1.1";
+var apkurl = "https://sp.sec-an.cn/storage01/xxqg/v2.0.2.apk";
+var latest_version = "2.0.2";
 if (CONFIG.get("NO_UPDATE", 0) && (app.versionName != latest_version)) {
     ui.update.visibility = 0;
     ui.update.setText("点击更新至最新版v" + latest_version);
@@ -118,6 +118,7 @@ ui.study.click(function () {
     if (!CONFIG.get("OCR", 0) || BAIDUAPI.get("AK", "")) {
         threads.start(function () {
             let url = [
+                'https://gitee.com/sec-an/js/raw/master/study.js',
                 'https://gitee.com/sec-an/js/raw/master/helper.js',
                 'http://cdn.sec-an.cn/Better-Auto-XXQG/helper.js',
                 'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/helper.js',
@@ -198,7 +199,9 @@ function check_baidu_api() {
 function checkversion() {
     var releaseNotes = "版本 v" + latest_version + "\n" +
         "更新日志:\n" +
-        "* AutoX回滚到 rhino-1.7.13，重新打包\n";
+        "* 使用AutoX v5.7.8重新打包\n" +
+        "* PaddleOCR优化\n" +
+        "* 适配鸿蒙，建议升级\n";
     dialogs.build({
             title: "发现新版本",
             content: releaseNotes,
