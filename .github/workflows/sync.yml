@@ -26,7 +26,5 @@ jobs:
       run: |
         git config --local user.email "juan_0525@outlook.com"
         git config --local user.name "secan"
-        git add .
-        git commit -m "update" -a
-        git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-        git push
+    - name: run script
+      run: chmod +x ./update-repo.sh&&./update-repo.sh
