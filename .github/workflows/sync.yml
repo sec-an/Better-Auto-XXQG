@@ -26,5 +26,4 @@ jobs:
       run: |
         git config --local user.email "juan_0525@outlook.com"
         git config --local user.name "secan"
-    - name: run script
-      run: chmod +x ./update-repo.sh&&./update-repo.sh
+        chmod +x ./update-repo.sh&&./update-repo.sh
