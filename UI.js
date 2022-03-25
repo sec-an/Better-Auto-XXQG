@@ -138,7 +138,6 @@ ui.study.click(function () {
                 } catch (error) {}
             }
             toastLog("开始积分判断运行");
-            console.log(helper);
             execution = engines.execScript("强国助手", helper);
         });
     } else {
