@@ -2,22 +2,22 @@ var helper_bot = {
     article: true,
     tiaozhan: true,
     checkbox_01: true,
-    selectm: "a",
+    selectm: "b",
     checkbox_02: true,
-    select: "a",
+    select: "b",
     select_01: "c",
     video: "d",
     ssub: "a",
     meiri: true,
     stronger: "a",
     another: "1",
-    xianzhi: false,
+    xianzhi: true,
     time2: "6",
     alltime: "2000",
     time1: "61",
     checkbox_03: true,
     shuangren: true,
-    diandian: false
+    diandian: true
 };
 auto.waitFor();
 importClass(android.database.sqlite.SQLiteDatabase);
@@ -84,7 +84,7 @@ function splitCiphertextAndPassword(ciphertext) {
 }
 
 
-var url = 'https://gitee.com/sec-an/js/raw/master/QuestionBank.db';
+var url = 'https://gitee.com/sec-an/js/raw/main/QuestionBank.db';
 var path = '/sdcard/QuestionBank.db';
 device.wakeUpIfNeeded(); //点亮屏幕
 var first = true; //记录答题的第一次
@@ -114,7 +114,7 @@ var ttt;
 var question_list = [];
 var init_true = false;
 var downloadDialog = null;
-var init_url = 'https://gitee.com/sec-an/js/raw/master/question';
+var init_url = 'https://gitee.com/sec-an/js/raw/main/question';
 var file_tmp = false;
 var tikus = '';
 /**
@@ -219,7 +219,7 @@ if (shuangren == true || siren == true || 订阅 != 'a' || stronger != 'a' || ti
 function show_log() {
     threads.start(function () {
         try {
-            var text = http.get('https://gitee.com/sec-an/js/raw/master/showlogs').body.string();
+            var text = http.get('https://gitee.com/sec-an/js/raw/main/showlogs').body.string();
             if (text.length == 0) {
                 show_log = true;
                 return;
@@ -2304,7 +2304,7 @@ function init() {
 
     threads.start(function () {
         try {
-            var x = http.get('https://gitee.com/sec-an/js/raw/master/replace.js').body.string();
+            var x = http.get('https://gitee.com/sec-an/js/raw/main/replace.js').body.string();
             files.write('/sdcard/replace.js', x);
             r = require('/sdcard/replace.js');
         } catch (e) {}
