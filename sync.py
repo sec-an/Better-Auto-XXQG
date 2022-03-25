@@ -3,7 +3,7 @@ import json
 
 
 def update_file(url, name):
-    with open(name, 'wb') as file:
+    with open(name.split(".")[0], 'wb') as file:
         file.write(requests.get(url).content)
 
 
