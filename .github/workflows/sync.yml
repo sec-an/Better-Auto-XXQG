@@ -27,3 +27,11 @@ jobs:
     - name: sync
       run: |
         python sync.py
+    - name: Auto Commit Push
+      run: |
+        git config --local user.email "juan_0525@outlook.com"
+        git config --local user.name "secan"
+        git add .
+        git commit -m "update" -a
+        git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        git push
