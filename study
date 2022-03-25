@@ -1,24 +1,3 @@
-var helper_bot = {
-    article: true,
-    tiaozhan: true,
-    checkbox_01: true,
-    selectm: "b",
-    checkbox_02: true,
-    select: "b",
-    select_01: "c",
-    video: "d",
-    ssub: "a",
-    meiri: true,
-    stronger: "a",
-    another: "1",
-    xianzhi: true,
-    time2: "6",
-    alltime: "2000",
-    time1: "61",
-    checkbox_03: true,
-    shuangren: true,
-    diandian: true
-};
 auto.waitFor();
 importClass(android.database.sqlite.SQLiteDatabase);
 importClass("java.security.SecureRandom");
@@ -84,30 +63,32 @@ function splitCiphertextAndPassword(ciphertext) {
 }
 
 
+var CONFIG = storages.create("CONFIG");
+var BAIDUAPI = storages.create("BAIDUAPI");
+
 var url = 'https://gitee.com/sec-an/js/raw/main/QuestionBank.db';
 var path = '/sdcard/QuestionBank.db';
 device.wakeUpIfNeeded(); //点亮屏幕
 var first = true; //记录答题的第一次
 var r; // 替换用；
-var meizhou_txt = helper_bot.checkbox_02;
-var zhuanxiang_txt = helper_bot.checkbox_01;
-var siren = helper_bot.checkbox_03;
-var shuangren = helper_bot.shuangren;
 
-var articles = helper_bot.article;
-var video = helper_bot.video;
-var meiri = helper_bot.meiri;
-var tiaozhan = helper_bot.tiaozhan;
+var articles = CONFIG.get("article", true);
+var video = CONFIG.get("video", 0);
+var meiri = CONFIG.get("meiri", true);
+var tiaozhan = CONFIG.get("tiaozhan", true);
+var zhuanxiang_txt = CONFIG.get("checkbox_01", true);
+var meizhou_txt = CONFIG.get("checkbox_02", true);
+var siren = CONFIG.get("checkbox_03", true);
+var shuangren = CONFIG.get("shuangren", true);
 
-var choose = helper_bot.select_01;
+var 专项答题下滑 = CONFIG.get("select", 0);
+var 每周答题下滑 = CONFIG.get("selectm", 0);
+var choose = CONFIG.get("select_01", 0);
 
-var 专项答题下滑 = helper_bot.select;
-var 每周答题下滑 = helper_bot.selectm;
 
-var 订阅 = helper_bot.ssub;
-// var 随机 = helper_bot.suiji;
+var 订阅 = CONFIG.get("ssub", 0);
 
-var stronger = helper_bot.stronger; //每日答题增强模式
+var stronger = CONFIG.get("stronger", 0); //每日答题增强模式
 var token;
 var ttt;
 
@@ -121,15 +102,15 @@ var tikus = '';
  * 获取用户token
  */
 function get_baidu_token() { // 百度ocr
-    if (!helper_bot.AK || !helper_bot.SK) {
+    if (!BAIDUAPI.get("AK", "") || !BAIDUAPI.get("SK", "")) {
         console.error('百度ocr配置未填写!!!');
         exit();
     }
     var res = http.post(
         'https://aip.baidubce.com/oauth/2.0/token', {
             grant_type: 'client_credentials',
-            client_id: helper_bot.AK.replace(/ /g, ''),
-            client_secret: helper_bot.SK.replace(/ /g, '')
+            client_id: BAIDUAPI.get("AK", "").replace(/ /g, ''),
+            client_secret: BAIDUAPI.get("SK", "").replace(/ /g, '')
         }
     );
     var xad = res.body.json()['access_token'];
@@ -151,22 +132,20 @@ function get_paddle_ocr() {
 }
 
 var showlog = false;
-if (shuangren == true || siren == true || 订阅 != 'a' || stronger != 'a' || tiaozhan) {
+if (shuangren == true || siren == true || 订阅 != 0 || stronger != 0 || tiaozhan) {
     console.show(true);
     if (siren == true || shuangren == true) {
         console.error('正在获取截图权限，并检查ocr配置是否正确');
-        if (choose == 'c') {
+        if (choose == 0) {
             get_paddle_ocr();
-        } else if (choose == 'd') token = get_baidu_token();
+        } else if (choose == 1) token = get_baidu_token();
     }
-    if (stronger != 'a') {
+    if (stronger != 0) {
         console.info('正在检测增强模式配置');
-        if (stronger == 'c') { // 百度ocr
-            if (siren == true && choose == 'd') {
-                ttt = token;
-            } else {
-                ttt = get_baidu_token();
-            }
+        if (siren == true && choose == 1) {
+            ttt = token;
+        } else {
+            ttt = get_baidu_token();
         }
     }
     if (!files.exists(path)) {
@@ -185,7 +164,7 @@ if (shuangren == true || siren == true || 订阅 != 'a' || stronger != 'a' || ti
 
     if (tiaozhan || siren || shuangren)
         init();
-    if (tiaozhan && !(siren == true || shuangren == true || 订阅 != 'a' || stronger != 'a')) {} //只开了挑战答题的话
+    if (tiaozhan && !(siren == true || shuangren == true || 订阅 != 0 || stronger != 0)) {} //只开了挑战答题的话
     else {
         threads.start(function () {
             if (!requestScreenCapture(false)) {
@@ -270,8 +249,8 @@ var doubleCount = 1; // 双人对战
 var meizhou = 1; //每周答题
 var zhuanxiang = 1; //专项答题
 
-var aTime = helper_bot.time1; //有效阅读一分钟1分*6
-var vTime = helper_bot.time2; //每个小视频学习-5秒
+var aTime = CONFIG.get("time1", "61"); //有效阅读一分钟1分*6
+var vTime = CONFIG.get("time2", "6"); //每个小视频学习-5秒
 var rTime = 370; //广播收听6分 * 60 = 360秒
 
 var 点点通 = {
@@ -603,7 +582,7 @@ function articleStudy(x) {
             delay(1.5);
         }
     }
-    aTime = helper_bot.time1;
+    aTime = CONFIG.get("time1", "61");
 }
 
 /**
@@ -1027,7 +1006,7 @@ function sub() {
     var old_names = '';
     console.log('搜索中');
     for (var i = 0; i < len.childCount() - 1 && asub != 0; i++) {
-        if (订阅 == 'c') i = 1;
+        if (订阅 == 2) i = 1;
         len.child(i).click();
         delay(1);
         while (true && asub != 0) {
@@ -1047,7 +1026,7 @@ function sub() {
                 if (list != null && list.childCount() < 5) break;
             }
         }
-        if (订阅 == 'c') break;
+        if (订阅 == 2) break;
     }
     if (asub == 0) {
         back();
@@ -1062,7 +1041,7 @@ function sub() {
     list = className("android.view.View").depth(14).scrollable(true).findOne();
     old_names = '';
     for (var i = 0; i < len.childCount() - 1 && asub != 0; i++) {
-        if (订阅 == 'c') i = 1;
+        if (订阅 == 2) i = 1;
         len.child(i).click();
         delay(1);
         while (true && asub != 0) {
@@ -1082,7 +1061,7 @@ function sub() {
                 if (list != null && list.childCount() < 5) break;
             }
         }
-        if (订阅 == 'c') break;
+        if (订阅 == 2) break;
     }
     if (asub == 0) {
         console.info('订阅完成');
@@ -1141,7 +1120,7 @@ function meizhouAnswer() {
             dailyAnswer();
             break;
         } else {
-            if (每周答题下滑 == 'a') {
+            if (每周答题下滑 == 0) {
                 console.info("没有可答题的题目，返回");
                 back();
                 delay(1);
@@ -1200,7 +1179,7 @@ function zhuanxiangAnswer() {
             dailyAnswer();
             break;
         } else {
-            if (专项答题下滑 == 'a') {
+            if (专项答题下滑 == 0) {
                 console.log('没有可答题的题目，返回');
                 back();
                 delay(1);
@@ -1456,11 +1435,11 @@ function dailyQuestionLoop() {
 
     if (textStartsWith("填空题").exists()) {
         if (answer == "") {
-            if (stronger == 'a') {
+            if (stronger == 0) {
                 var tipsStr = getTipsStr();
                 answer = getAnswerFromTips(questionArray, tipsStr);
                 console.info("提示中的答案：" + answer);
-            } else if (stronger == 'c') {
+            } else {
                 var seeTips = text("查看提示").findOnce();
                 seeTips.click();
                 delay(1);
@@ -1493,11 +1472,11 @@ function dailyQuestionLoop() {
         }
     } else if (textStartsWith("多选题").exists() || textStartsWith("单选题").exists()) {
         if (answer == "") {
-            if (stronger == 'a') {
+            if (stronger == 0) {
                 var tipsStr = getTipsStr();
                 answer = clickByTips(tipsStr);
                 console.info("提示中的答案：" + answer);
-            } else if (stronger == 'c') {
+            } else {
                 var seeTips = text("查看提示").findOnce();
                 seeTips.click();
                 delay(1);
@@ -2067,7 +2046,7 @@ function do_contest_answer(depth_option, question1) {
                 var img = captureScreen();
                 var b = className('ListView').depth(29).findOne(3000).bounds();
                 img = images.clip(img, b.left, b.top, b.right - b.left, b.bottom - b.top);
-                if (choose == 'c') {
+                if (choose == 0) {
                     old_question = paddle_ocr_api(img);
                 } else old_question = baidu_ocr_api(img, token);
                 // images.save(img, "/sdcard/选项"+xn+".png", "png", 50);
@@ -2416,7 +2395,7 @@ function zsyAnswer() {
         exit();
     }
     // init();
-    if (choose == 'c') {
+    if (choose == 0) {
         paddle_ocr_api(img);
     } else baidu_ocr_api(img, token);
     var count = 2;
@@ -2474,7 +2453,7 @@ function zsyAnswer() {
             // images.save(img, "/sdcard/题目"+xxx+".jpg", "jpg", 50);
             // xxx++;
             var question;
-            if (choose == 'c') {
+            if (choose == 0) {
                 if (!first && !音字) // 第一题不变色的原因的：
                     img = images.inRange(img, '#000000', '#444444');
                 question = paddle_ocr_api(img);
@@ -2518,8 +2497,8 @@ function zsyAnswer() {
             sleep(random_time(delay_time));
         }
     }
-    if (helper_bot.another)
-        var x = helper_bot.another * 1;
+    if (CONFIG.get("another", "1"))
+        var x = CONFIG.get("another", "1") * 1;
     else
         var x = 0;
     while (x > 0) {
@@ -2587,7 +2566,7 @@ function zsyAnswer() {
 //     main();
 // }
 
-var ta = helper_bot.alltime * 1;
+var ta = CONFIG.get("alltime", "2000") * 1;
 if (!ta || ta <= 0) ta = 1500;
 var thread = null;
 
@@ -2624,18 +2603,18 @@ function push_score() {
     var score = getScores(3);
     score += '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n';
     try {
-        url = 'https://pushplus.hxtrip.com/send?token=' + helper_bot.Token.replace(/ /g, '') + '&title=Study&content=' + score + '&template=html';
+        url = 'https://pushplus.hxtrip.com/send?token=' + CONFIG.get("Token", "").replace(/ /g, '') + '&title=Study&content=' + score + '&template=html';
         http.get(url);
     } catch (e) {}
     try {
-        url = 'http://www.pushplus.plus/send?token=' + helper_bot.Token.replace(/ /g, '') + '&title=Study&content=' + score + '&template=html';
+        url = 'http://www.pushplus.plus/send?token=' + CONFIG.get("Token", "").replace(/ /g, '') + '&title=Study&content=' + score + '&template=html';
         http.get(url);
     } catch (e) {}
 }
 
 function re_store() {
     try {
-        if (helper_bot.xianzhi == true) {
+        if (CONFIG.get("xianzhi", false)) {
             console.warn('四人双人答题无限制开启');
             zsyCount = 1;
             doubleCount = 1;
@@ -2710,7 +2689,7 @@ function rand_mode() {
     question_list = null;
     article_list = null;
     back_table();
-    if (helper_bot.Token != null && helper_bot.Token.length > 6) {
+    if (CONFIG.get("Token", "") != null && CONFIG.get("Token", "").length > 6) {
         delay(1);
         push_score();
     }
@@ -2855,13 +2834,13 @@ function 视频学习() {
         }
         delay(2);
     }
-    while ((vCount != 0 || 点点通['有效视听']) && video != 'a') {
+    while ((vCount != 0 || 点点通['有效视听']) && video != 3) {
         if (点点通['有效视听'])
             vCount = Math.max(点点通['有效视听'] * 6 - (6 - vCount), 点点通['有效视听'] * 6);
         console.error('当前第' + x + '次看视频');
-        if (video == 'b')
+        if (video == 2)
             videoStudy_news(x); //看视频
-        else if (video == 'a')
+        else if (video == 1)
             video_news(x); //电视台
         else new_bailing_video(x); // 新百灵
         console.info("等待五秒，然后确认视频是否已满分。");
@@ -2902,7 +2881,7 @@ function 本地() {
 }
 
 function 订() {
-    if (订阅 != 'a' && asub != 0) {
+    if (订阅 != 0 && asub != 0) {
         if (text("排行榜").exists()) {
             delay(0.5);
             back();
@@ -2958,7 +2937,7 @@ function 文章和广播() {
     var r_start = new Date().getTime(); //广播开始时间
     var x = 0;
     while ((aCount != 0 || 点点通['有效浏览']) && articles == true) {
-        aTime = helper_bot.time1;
+        aTime = CONFIG.get("time1", "61");
         articleStudy(x); //学习文章，包含点赞、分享和评论
         console.info("等待五秒，然后确认文章是否已满分。");
         delay(5);
@@ -2982,7 +2961,7 @@ function 文章和广播() {
 }
 
 function diandian() {
-    if (helper_bot.diandian == null || helper_bot.diandian == false) return;
+    if (CONFIG.get("diandian", false) == false) return;
     while (!desc("工作").exists()) { //等待加载出主页
         console.info("等待加载主页");
         delay(1);
