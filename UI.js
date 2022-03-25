@@ -118,7 +118,7 @@ ui.study.click(function () {
     if (!CONFIG.get("OCR", 0) || BAIDUAPI.get("AK", "")) {
         threads.start(function () {
             let url = [
-                'https://gitee.com/sec-an/js/raw/main/study.js',
+                'https://gitee.com/sec-an/js/raw/main/study',
                 'https://gitee.com/sec-an/js/raw/main/helper.js',
                 'http://cdn.sec-an.cn/Better-Auto-XXQG/helper.js',
                 'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/helper.js',
