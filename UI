@@ -284,8 +284,8 @@ var thread = null;
 Initialize();
 
 // 版本更新检查
-var apkurl = "https://sp.sec-an.cn/storage01/xxqg/v2.0.2.apk";
-var latest_version = "2.0.2";
+var apkurl = "https://sp.sec-an.cn/storage01/xxqg/v2.0.3.apk";
+var latest_version = "2.0.3";
 if (CONFIG.get("NO_UPDATE", 0) && (app.versionName != latest_version)) {
     ui.update.visibility = 0;
     ui.update.setText("点击更新至最新版v" + latest_version);
@@ -373,7 +373,7 @@ ui.start.click(function () {
     }
     threads.start(function () {
         let url = [
-            'https://gitee.com/sec-an/js/raw/main/study',
+            'https://gitee.com/sec-an/js-cdn/raw/main/study',
             'https://sp.sec-an.cn/storage01/xxqg/study.js',
             'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/study',
             'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/study',
