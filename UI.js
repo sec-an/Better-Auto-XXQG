@@ -1,5 +1,11 @@
 "ui";
 
+importClass(java.net.HttpURLConnection);
+importClass(java.net.URL);
+importClass(java.io.File);
+importClass(java.io.FileOutputStream);
+importClass(android.graphics.Color);
+
 var color = "#FF4FB3FF";
 
 ui.statusBarColor("#FF4FB3FF")
