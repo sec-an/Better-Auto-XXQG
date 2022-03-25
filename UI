@@ -554,9 +554,7 @@ function check_baidu_api() {
 function checkversion() {
     var releaseNotes = "版本 v" + latest_version + "\n" +
         "更新日志:\n" +
-        "* 使用AutoX v5.7.8重新打包\n" +
-        "* PaddleOCR优化\n" +
-        "* 适配鸿蒙，建议升级\n";
+        "* Gitee抽风,更新UI脚本地址"
     dialogs.build({
             title: "发现新版本",
             content: releaseNotes,
