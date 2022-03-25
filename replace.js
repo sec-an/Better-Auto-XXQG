@@ -10,6 +10,7 @@ r.replace = function(answers) {
     if(answers.indexOf('放松活动')!=-1&&answers.indexOf('基本活动')!=-1) answers = answers.replace(/一/g, "");
     if(answers.indexOf('辑拿')!=-1&&answers.indexOf('绳拿')!=-1) answers = answers.replace(/绳拿/g, "缉拿");
     if(answers.indexOf('黄海')!=-1&&answers.indexOf('潮海')!=-1) answers = answers.replace(/潮海/g, "渤海");
+    answers = answers.replace(/粗扩/g, "粗犷");
     answers = answers.replace(/哆峻/g, "啰唆");
     answers = answers.replace(/點然失色/g, "黯然失色");
     answers = answers.replace(/chaigian/g, "chaiqian");
