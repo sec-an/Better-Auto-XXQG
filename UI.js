@@ -9,7 +9,7 @@ importClass(android.graphics.Color);
 ui.layout(
     <vertical>
         <appbar>
-                <toolbar id="toolbar" title="{{decodeURI('%E5%AD%A6%E4%B9%A0%E5%BC%BA%E5%9B%BD')}}" />
+                <toolbar id="toolbar" title="{{decodeURI('%E5%BC%BA%E5%9B%BD%E5%8A%A9%E6%89%8B')}}" />
         </appbar>
         <text textSize="18sp" margin="20" gravity="center" textColor="black" text="四人赛、双人对抗 模式选择" />
         <radiogroup margin="5 0 5 0">
@@ -118,8 +118,8 @@ ui.study.click(function () {
     if (!CONFIG.get("OCR", 0) || BAIDUAPI.get("AK", "")) {
         threads.start(function () {
             let url = [
-                'https://gitee.com/sec-an/js/raw/master/study.js',
-                'https://gitee.com/sec-an/js/raw/master/helper.js',
+                'https://gitee.com/sec-an/js/raw/main/study.js',
+                'https://gitee.com/sec-an/js/raw/main/helper.js',
                 'http://cdn.sec-an.cn/Better-Auto-XXQG/helper.js',
                 'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/helper.js',
                 'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/helper.js',
@@ -133,11 +133,12 @@ ui.study.click(function () {
                         var helper = res.body.string();
                         break;
                     } else {
-                        toastLog()('助手脚本:地址' + i + '下载失败');
+                        toastLog('助手脚本:地址' + i + '下载失败');
                     }
                 } catch (error) {}
             }
             toastLog("开始积分判断运行");
+            console.log(helper);
             execution = engines.execScript("强国助手", helper);
         });
     } else {
