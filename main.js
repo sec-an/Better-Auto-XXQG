@@ -4,7 +4,7 @@ http.__okhttp__.setTimeout(10000);
 
 let url = [
     'https://gitee.com/sec-an/js/raw/master/UI.js',
-    'http://cdn.sec-an.cn/Better-Auto-XXQG/UI.js',
+    'https://sp.sec-an.cn/storage01/xxqg/UI.js',
     'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/UI.js',
     'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/UI.js',
     'https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/UI.js',
@@ -18,7 +18,7 @@ for (var i = 0; i < url.length; i++) {
             var UI = res.body.string();
             if (UI.indexOf('"ui";') == 0) break;
         } else {
-            toastLog()('UI脚本:地址' + i + '下载失败');
+            toastLog('UI脚本:地址' + i + '下载失败');
         }
     } catch (error) {}
 }
