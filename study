@@ -1342,6 +1342,7 @@ function clickByTips(tipsStr) {
  * @return: null
  */
 function clickByAnswer(answer) {
+    var click_true = false;
     if (className("ListView").exists()) {
         var listArray = className("ListView").findOnce().children();
         listArray.forEach(item => {
@@ -1350,8 +1351,13 @@ function clickByAnswer(answer) {
             var listDescStr = item.child(0).child(2).text();
             if (answer.indexOf(listIndexStr) >= 0 || answer == listDescStr) {
                 item.child(0).click();
+                click_true = true;
             }
         });
+    }
+    if (!click_true) {
+        console.error('没有找到选项，选A跳过');
+        className("ListView").findOnce().child(0).child(0).click();
     }
 }
 
@@ -1952,6 +1958,8 @@ function do_contest_answer(depth_option, question1) {
             for (var k = 0; k < 2; k++) {
                 answers = old_answers.split('B.')[k];
                 // answers = answers.match(/[\u4e00-\u9fa5]/g).join(""); //剩余汉字
+                answers = answers.replace(/哆峻/g, "啰唆");
+                answers = answers.replace(/罗峻/g, "罗唆");
                 answers = answers.replace(/暖跎/g, "蹉跎");
                 answers = answers.replace(/跨踏/g, "踌躇");
                 answers = answers.replace(/chuo/g, "chuò");
@@ -2404,15 +2412,22 @@ function zsyAnswer() {
     for (var i = 0; i < count; i++) {
         sleep(random_time(delay_time));
         if (text("随机匹配").exists()) {
-            text("随机匹配").findOne().parent().child(0).click();
+            text("随机匹配").findOne(3000).parent().child(0).click();
             console.log("点击随机匹配");
             count = 1;
-            first = true;
         } else {
             console.log("点击开始比赛");
-            my_click_clickable('开始比赛');
-            first = true;
+            // my_click_clickable('开始比赛');
+            var s = text("开始比赛").findOne(5000);
+            if (s) {
+                s.click();
+            } else {
+                console.log('没有找到开始比赛，点击随机匹配');
+                text("随机匹配").findOne(3000).parent().child(0).click();
+                count = 1;
+            }
         }
+        first = true;
         delay(1);
         if (text('知道了').exists()) {
             console.warn('答题已满');
@@ -2506,13 +2521,20 @@ function zsyAnswer() {
         x--;
         delay(2);
         click('继续挑战');
-        delay(2);
+        delay(3);
         if (text("随机匹配").exists()) {
             text("随机匹配").findOne().parent().child(0).click();
             console.log("点击随机匹配");
         } else {
             console.log("点击开始比赛");
-            my_click_clickable('开始比赛');
+            // my_click_clickable('开始比赛');
+            var s = text("开始比赛").findOne(5000);
+            if (s) {
+                s.click();
+            } else {
+                console.log('没有找到开始比赛，点击随机匹配');
+                text("随机匹配").findOne(3000).parent().child(0).click();
+            }
         }
         delay(1);
         if (text('知道了').exists()) {
@@ -2696,6 +2718,7 @@ function rand_mode() {
     end = new Date().getTime();
     console.log("运行结束,共耗时" + (parseInt(end - start)) / 1000 + "秒");
     console.log("3s后自动关闭悬浮窗，查看日志请到助手软件主页并返回一次即可查看");
+    desc("工作").click();
     delay(3);
     console.hide();
     device.cancelKeepingAwake();
