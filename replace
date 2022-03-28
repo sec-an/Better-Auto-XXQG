@@ -10,6 +10,12 @@ r.replace = function(answers) {
     if(answers.indexOf('放松活动')!=-1&&answers.indexOf('基本活动')!=-1) answers = answers.replace(/一/g, "");
     if(answers.indexOf('辑拿')!=-1&&answers.indexOf('绳拿')!=-1) answers = answers.replace(/绳拿/g, "缉拿");
     if(answers.indexOf('黄海')!=-1&&answers.indexOf('潮海')!=-1) answers = answers.replace(/潮海/g, "渤海");
+    answers = answers.replace(/悠气/g, "憋气");
+    answers = answers.replace(/既往不智/g, "既往不咎");
+    answers = answers.replace(/继脚石/g, "绊脚石");
+    answers = answers.replace(/演合/g, "凑合");
+    answers = answers.replace(/刘翻/g, "刘勰");
+    answers = answers.replace(/情懒/g, "慵懒");
     answers = answers.replace(/河汉/g, "河汊");
     answers = answers.replace(/谢肌/g, "谢朓");
     answers = answers.replace(/绎脚石/g, "绊脚石");
