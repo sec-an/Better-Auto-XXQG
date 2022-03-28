@@ -560,7 +560,7 @@ function articleStudy(x) {
                     collectCommentShare(); //评论和分享
                 }
                 back(); //返回主界面
-                console.info('返回主界面')
+                console.info('返回主界面');
                 delay(0.3);
                 while (!desc("工作").exists()) { //等待加载出主页
                     console.info("等待加载主页");
@@ -1960,7 +1960,8 @@ function do_contest_answer(depth_option, question1) {
                 // answers = answers.match(/[\u4e00-\u9fa5]/g).join(""); //剩余汉字
                 answers = answers.replace(/哆峻/g, "啰唆");
                 answers = answers.replace(/罗峻/g, "罗唆");
-                answers = answers.replace(/暖跎/g, "蹉跎");
+                answers = answers.replace(/暖陀/g, "蹉跎");
+                answers = answers.replace(/暖跑/g, "蹉跎");
                 answers = answers.replace(/跨踏/g, "踌躇");
                 answers = answers.replace(/chuo/g, "chuò");
                 answers = answers.replace(/cuotuo/g, "cuōtuó");
@@ -2428,6 +2429,7 @@ function zsyAnswer() {
             }
         }
         first = true;
+        音字 = false;
         delay(1);
         if (text('知道了').exists()) {
             console.warn('答题已满');
