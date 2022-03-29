@@ -373,7 +373,6 @@ ui.start.click(function () {
     }
     threads.start(function () {
         let url = [
-            'https://gitee.com/sec-an/js-cdn/raw/main/study',
             'https://sp.sec-an.cn/storage01/xxqg/study.js',
             'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/study',
             'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/study',
