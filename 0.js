@@ -1687,7 +1687,7 @@ function get_ans_by_ocr1() {
 //   ans = ocr_rslt_to_txt(resp);
   // 为适配第三方OCR改动
   if (!ocr_plugin) {
-    ans = paddle_ocr_api(paddle.ocr(img));
+    ans = paddle_ocr_api(img);
   } else {
     ans = ocr.recognizeText(img);
   }
