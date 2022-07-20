@@ -866,13 +866,13 @@ function do_duizhan1(renshu) {
     fInfo("点击："+start_click);
   }
   let delay = Number(jisu);
-  if (delay > 0 && duizhan_mode == "guding") {
+  if (delay > 0 && duizhan_mode == 1) {
     ui.run(function() {
       let title = w.title.getText();
       w.title.setText(title+"(急速)");
       toastLog("极速模式开启");
     });
-  } else if (duizhan_mode == "shoudong") {
+  } else if (duizhan_mode == 2) {
     ui.run(function() {
       let title = w.title.getText();
       w.title.setText(title+"(手动)");
@@ -1048,7 +1048,7 @@ function do_duizhan1(renshu) {
         else if (ans_list.length == 0) {
           fInfo("未找到答案");
         }
-        if (duizhan_mode == "guding") {
+        if (duizhan_mode == 1) {
           if (delay > 0 && num != 1) {sleep(random(delay, delay+50));}
           else {
             // 直到选项完全出现在屏幕
@@ -1062,7 +1062,7 @@ function do_duizhan1(renshu) {
           }
           num++;
           continue;
-        } else if (duizhan_mode == "shoudong") {
+        } else if (duizhan_mode == 2) {
           num++;
           textMatches(/第.+题|继续挑战/).waitFor();
           continue;
@@ -1179,7 +1179,7 @@ function do_duizhan1(renshu) {
           if (similar > max_simi) {
             max_simi = similar;
             ans_txt = ans;
-            if (duizhan_mode == "guding") {
+            if (duizhan_mode == 1) {
               // 答案默认顺序优先
               right_xuan = ans[0];
               right_xuan2 = xuan_txt[0].toUpperCase();
@@ -1192,7 +1192,7 @@ function do_duizhan1(renshu) {
         }
       }
       if (ans_list.length > 1) {fTips("匹配答案:"+ ans_txt);}
-      if (right_xuan != '' && duizhan_mode != "shoudong") {
+      if (right_xuan != '' && duizhan_mode != 2) {
         let idx = idx_dict[right_xuan];
         fInfo("最终:"+ right_xuan);
         try {className("android.widget.RadioButton").findOnce(idx).parent().click();}
@@ -1208,7 +1208,7 @@ function do_duizhan1(renshu) {
           }
         }
         //log(a);
-      } else if (duizhan_mode == "shoudong") {
+      } else if (duizhan_mode == 2) {
         textMatches(/第.+题|继续挑战/).waitFor();
       }
       else {
