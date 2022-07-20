@@ -1,0 +1,15 @@
+{
+  "assets": [],
+  "build": {
+    "build_number": 0,
+    "build_time": 0
+  },
+  "useFeatures": [],
+  "icon": "res/logo.png",
+  "main": "main.js",
+  "name": "强国助手",
+  "packageName": "com.auto.xxqg",
+  "scripts": {},
+  "versionCode": 1,
+  "versionName": "1.0.0"
+}
