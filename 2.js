@@ -1218,7 +1218,7 @@ function zhuanxiangAnswer() {
     var textOrder = text("排行榜").findOnce().parent();
     while (text("排行榜").exists()) {
         console.info("点击专项答题");
-        textOrder.child(4).click();
+        textOrder.child(3).click();
         delay(1);
     }
     delay(3);
