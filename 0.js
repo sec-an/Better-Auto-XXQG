@@ -2396,7 +2396,7 @@ function xxqg(userinfo) {
   jifen_list = refind_jifen();
   nolocate_thread.isAlive() && (nolocate_thread.interrupt(), fInfo("终止位置权限弹窗检测"));
   noupdate_thread.isAlive() && (noupdate_thread.interrupt(), fInfo("终止更新弹窗检测"));
-  d.isAlive() && (d.interrupt(), fInfo("终止消息通知检测"));
+  nonotice_thread.isAlive() && (nonotice_thread.interrupt(), fInfo("终止消息通知检测"));
   "true" == pinglun && ("old" == jifen_flag && "0" == jifen_list.child(jifen_map["评论"]).child(2).text().match(/\d+/)[0] || "new" == jifen_flag && "0" == jifen_list.child(jifen_map["评论"]).child(3).child(0).text()) && (toastLog("开始评论"), do_pinglun(), jifen_list = refind_jifen());
   "true" == shipin && ("old" == jifen_flag && "已完成" != jifen_list.child(jifen_map["视频"]).child(3).text() || "new" ==
       jifen_flag && "已完成" != jifen_list.child(jifen_map["视频"]).child(4).text()) && (console.verbose("无障碍服务：" + auto.service), toastLog("开始视听次数"), do_shipin(), jifen_list = refind_jifen());
@@ -2432,12 +2432,12 @@ function xxqg(userinfo) {
       "new" == jifen_flag && "0" == jifen_list.child(jifen_map["订阅"]).child(3).child(0).text()) && (toastLog("订阅开始"), d = do_dingyue(), jifen_list = refind_jifen());
   "false" == meizhou || c || fError("每周答题可能由于识别错误、包含视频题而不能满分，请手动作答");
   "false" == dingyue || d || fError("未能识别出订阅界面，订阅不支持学习强国V2.33.0以上版本");
-  if (pushplus || e) {
+  if (pushplus || token) {
       fInfo("推送前等待积分刷新5秒");
       sleep(5E3);
-      e || (e = pushplus);
+      token || (token = pushplus);
       try {
-          send_pushplus(e, sign_list)
+          send_pushplus(token, sign_list)
       } catch (h) {
           fError(h + ":push+推送失败，请尝试切换流量运行或者设置114DNS")
       }
