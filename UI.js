@@ -504,6 +504,7 @@ ui.emitter.on("create_options_menu", menu=>{
     menu.add("日志");
     menu.add("关于");
     menu.add("Github");
+    menu.add("V2.33.0下载");
 });
 
 // 监听选项菜单点击
@@ -517,6 +518,9 @@ ui.emitter.on("options_item_selected", (e, item)=>{
             break;
         case "Github":
             app.openUrl("https://github.com/sec-an/Better-Auto-XXQG");
+            break;
+        case "V2.33.0下载":
+            download("https://android-apps.pp.cn/fs08/2021/12/28/3/110_f37c420b0944cb7b9f60a2ad9b5518d2.apk?yingid=web_space&packageid=500730793&md5=664bb7bdcae57be189fc86100f4371c4&minSDK=21&size=191654161&shortMd5=1fee0bd160d08108a9d9e5f4773ce741&crc32=3879122865&did=ad484a175e19d0928044435e24bf03cb");
             break;
     }
     e.consumed = true;
@@ -895,7 +899,9 @@ function checkversion() {
             checkBoxPrompt: "不再提示",
             cancelable: false
         })
-        .on("positive", download)
+        .on("positive", () => {
+            download(apkurl);
+        })
         .on("neutral", () => {
             app.openUrl(apkurl);
         })
@@ -905,7 +911,7 @@ function checkversion() {
 }
 
 // 打开下载进度面板
-function download() {
+function download(url) {
     downloadDialog = dialogs.build({
         title: "正在下载...",
         progress: {
@@ -915,15 +921,15 @@ function download() {
         autoDismiss: false,
         cancelable: false
     }).show();
-    startDownload();
+    startDownload(url);
 }
 
 // 下载apk的主方法体
-function startDownload() {
+function startDownload(url) {
     threads.start(function () {
         var path = files.cwd() + "/new.apk";
         let apkFile = new File(path);
-        var conn = new URL(apkurl).openConnection();
+        var conn = new URL(url).openConnection();
         conn.connect();
         let is = conn.getInputStream();
         let length = conn.getContentLength();
