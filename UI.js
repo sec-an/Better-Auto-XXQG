@@ -489,8 +489,8 @@ var thread = null;
 Initialize();
 
 // 版本更新检查
-var apkurl = "https://ghproxy.com/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/v2.1.0.apk";
-var latest_version = "2.1.0";
+var apkurl = "https://gh.fakev.cn/sec-an/Better-Auto-XXQG/releases/download/v2.2.0/v2.2.0.apk";
+var latest_version = "2.2.0";
 if (GLOBAL_CONFIG.get("NO_UPDATE", 0) && (app.versionName != latest_version)) {
     ui.update.visibility = 0;
     ui.update.setText("点击更新至最新版v" + latest_version);
@@ -884,8 +884,8 @@ function check_baidu_api() {
 function checkversion() {
     var releaseNotes = "版本 v" + latest_version + "\n" +
         "更新日志:\n" +
-        "* 1.基于AutoX v6.2.3重新打包\n" +
-        "* 2.新增多个备选脚本,有待测试"
+        "* 1.基于AutoX v6.3.4重新打包\n" +
+        "* 2.调整默认OCR为Google ML kIT OCR"
     dialogs.build({
             title: "发现新版本",
             content: releaseNotes,
