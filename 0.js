@@ -2356,7 +2356,6 @@ function fRefocus() {
 
 function xxqg(userinfo) {
   var sign_list = [];
-  // 检测更新提示代码，出现就点掉
   fInfo("开始更新弹窗检测");
   var noupdate_thread = threads.start(function() {
     //在新线程执行的代码
@@ -2388,9 +2387,12 @@ function xxqg(userinfo) {
   fSet("username", name);
   back();
   ran_sleep();
-  "zhengxu" == meizhou ? meizhou_dao = !1 : "daoxu" == meizhou && (meizhou_dao = !0);
-  "zhengxu" == zhuanxiang ? zhuanxiang_dao = !1 : "daoxu" == zhuanxiang && (zhuanxiang_dao = !0);
-  "zhengxu" == dingyue ? dingyue_dao = !1 : "daoxu" == dingyue && (dingyue_dao = !0);
+  if (meizhou == 1) {meizhou_dao = false;}
+  else if (meizhou == 0) {meizhou_dao = true;}
+  if (zhuanxiang == 1) {zhuanxiang_dao = false;}
+  else if (zhuanxiang == 0) {zhuanxiang_dao = true;}
+  if (dingyue == 1) {dingyue_dao = false;}
+  else if (dingyue == 2) {dingyue_dao = true;}
   id("comm_head_xuexi_score").findOne().click();
   text("登录").waitFor();
   jifen_list = refind_jifen();
