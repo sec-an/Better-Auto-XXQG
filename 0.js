@@ -2550,7 +2550,7 @@ if (zhanghao) {
     let userinfo = zh.split(/:|：/);
     zhanghao_list.push(userinfo);
   };
-  if (zhanghao_list.length > 3) {zhanghao_list.length = 3;}
+  // if (zhanghao_list.length > 3) {zhanghao_list.length = 3;}
   //console.verbose(zhanghao_list);
   for (let userinfo of zhanghao_list) {
     console.verbose(userinfo);
