@@ -78,14 +78,13 @@ sleep(delay_time);
 /*****************更新内容弹窗部分*****************/
 var storage = storages.create('songgedodo');
 // 脚本版本号
-var last_version = "V10.9";
-var engine_version = "V10.10";
-var newest_version = "V10.11";
+var last_version = "V10.11";
+var engine_version = "V11.0";
+var newest_version = "V11.0";
 if (storage.get(engine_version, true)) {
   storage.remove(last_version);
-  let gengxin_rows = ["强国APP版本v2.33.0以上不支持订阅，可以在豌豆荚中下载历史版本",
-                      "1.解决了部分文章卡住的问题",
-                      "2.解决Pro版多账号最后登录时没有滑动验证",
+  let gengxin_rows = ["最新版本强国APP不支持多人对战，切勿更新！",
+                      "强国APP版本v2.33.0以上不支持订阅，可以在豌豆荚中下载历史版本",
                       "（点击取消不再提示）"];
   let is_show = confirm(engine_version + "版更新内容", gengxin_rows.join("\n"));
   if (!is_show) {storage.put(engine_version, false);}
@@ -143,10 +142,9 @@ fInfo("设置屏幕常亮");
 device.keepScreenOn(3600 * 1000);
 // 下载题库
 fInfo("检测题库更新");
-// var git_head = "https://gh.api.99988866.xyz/";
-// const update_info = get_tiku_by_http(git_head+"https://raw.githubusercontent.com/songgedodo/tiku/main/info.json");
 const update_info = get_tiku_by_http("https://gitcode.net/m0_64980826/songge_tiku/-/raw/master/info.json");
 fInfo("正在加载对战题库......请稍等\n题库版本:"+update_info["tiku_version"]);
+fInfo("如果不动就是正在下载，多等会");
 var tiku = [];
 try {tiku = get_tiku_by_http(update_info["tiku_link"]);}
 catch (e) {tiku = get_tiku_by_http(update_info["tiku_link2"]);}
@@ -182,8 +180,7 @@ var nolocate_thread = threads.start(function() {
   id("title_text").textContains("地理位置").waitFor();
   fInfo("检测到位置权限弹窗");
   sleep(1000);
-  var btn = text("暂不开启").findOne();
-  btn.click();
+  text("暂不开启").findOne().click();
   fInfo("已关闭定位");
 });
 fInfo("跳转学习APP");
@@ -207,15 +204,12 @@ sleep(2000);
 
 
 function do_pinglun() {
-  // 点击分享"去看看"回首页
-//   jifen_list = className("android.widget.ListView").depth(21).findOne();
-//   jifen_list = refind_jifen();
-  jifen_list.child(jifen_map["评论"]).child(3).click();
+  entry_jinfen_project("评论");
   fSet("title", "评论…");
   fClear();
   sleep(1000);
   swipe(device_w/2, device_h*0.7, device_w/2, device_h*0.4, 1000);
-  let wen_box = id("general_card_title_id").findOne().parent().parent();
+  id("general_card_title_id").findOne().parent().parent();
   fInfo("尝试点击title:"+ id("general_card_title_id").findOne().text());
 //   //log("文章click:", wen_box.click());
 //   while (!id("general_card_title_id").findOne().parent().parent().click()) {log("文章click: false");}
@@ -265,7 +259,7 @@ function do_pinglun() {
 
 /********时长部分*********/
 function do_shipin() {
-//   jifen_list = refind_jifen();
+  entry_jinfen_project("视频");
   jifen_list.child(jifen_map["视频"]).child(3).click();
   if (ddtong) { fSet("title", "视听(dd通)…"); }
   else { fSet("title", "视听学习…"); }
@@ -320,8 +314,7 @@ function do_wenzhang() {
 //   jifen_list = refind_jifen();
   // 点击进入本地
   let old_wen = storage_user.get("old_wen_list", []);
-  //log(typeof old_wen, old_wen);
-  jifen_list.child(jifen_map["本地"]).child(3).click();
+  entry_jinfen_project("本地");
   if (ddtong) { fSet("title", "文章(dd通)…"); }
   else { fSet("title", "选读文章…"); }
   fClear();
@@ -479,9 +472,7 @@ function do_wenzhang() {
 
 /********每日答题*********/
 function do_meiri() {
-  // 点击进入每日答题
-//   jifen_list = refind_jifen();
-  jifen_list.child(jifen_map["每日"]).child(3).click();
+  entry_jinfen_project("每日");
   fSet("title", "每日答题…");
   fClear();
   // 等待加载
@@ -524,9 +515,7 @@ function do_meiri() {
 
 /********每周答题*********/
 function do_meizhou() {
-  // 点击进入每周答题
-//   jifen_list = refind_jifen();
-  jifen_list.child(jifen_map["每周"]).child(3).click();
+  entry_jinfen_project("每周");
   fSet("title", "每周答题…");
   fClear();
   // 等待加载
@@ -626,9 +615,7 @@ function do_meizhou() {
 /*专项答题中提示的层次与每日每周的不一样
  * 专项答题出现的倒计时会影响22,23层的结构*/
 function do_zhuanxiang() {
-  // 点击进入专项答题
-//   jifen_list = refind_jifen();
-  jifen_list.child(jifen_map["专项"]).child(3).click();
+  entry_jinfen_project("专项");
   fSet("title", "专项答题…");
   fClear();
   // 等待加载
@@ -751,9 +738,7 @@ function do_zhuanxiang() {
 
 /********挑战答题*********/
 function do_tiaozhan() {
-  // 点击进入挑战答题
-//   jifen_list = refind_jifen();
-  jifen_list.child(jifen_map["挑战"]).child(3).click();
+  entry_jinfen_project("挑战");
   if (ddtong) { fSet("title", "挑战(dd通)…"); }
   else { fSet("title", "挑战答题…"); }
   fClear();
@@ -844,7 +829,7 @@ function do_duizhan1(renshu) {
   fClear();
   if (renshu == 2) {
     // 点击进入双人对战
-    jifen_list.child(jifen_map["双人"]).child(3).click();
+    entry_jinfen_project("双人");
     fSet("title", "双人对战");
     fInfo("等待随机匹配");
     text("随机匹配").waitFor();
@@ -856,7 +841,7 @@ function do_duizhan1(renshu) {
     } while (text("随机匹配").exists());
   } else {
     // 点击进入四人赛
-    jifen_list.child(jifen_map["四人"]).child(3).click();
+    entry_jinfen_project("四人");
     fSet("title", "四人赛");
     // 等待开始比赛并点击
     fInfo("等待开始比赛");
@@ -1236,14 +1221,14 @@ function dacuo(renshu) {
   jifen_list = refind_jifen();
   if (renshu == 2) {
     // 点击进入双人对战
-    jifen_list.child(jifen_map["双人"]).child(3).click();
+    entry_jinfen_project("双人");
     text("随机匹配").waitFor();
     sleep(1000);
     text("随机匹配").findOne().parent().child(0).click();
   }
   else if (renshu == 4) {
     // 点击进入四人赛
-    jifen_list.child(jifen_map["四人"]).child(3).click();
+    entry_jinfen_project("四人");
     // 等待开始比赛并点击
     fInfo("等待开始比赛");
     sleep(1000);
@@ -1352,8 +1337,7 @@ function dacuo(renshu) {
 
 /********订阅*********/
 function do_dingyue() {
-//   jifen_list = refind_jifen();
-  jifen_list.child(jifen_map["订阅"]).child(3).click();
+  entry_jinfen_project("订阅");
   fSet("title", "订阅…");
   fClear();
   let tab1 = descContains("Tab").findOne(9000);
@@ -1440,8 +1424,7 @@ function do_dingyue() {
 
 /*********本地*********/
 function do_bendi() {
-//   jifen_list = refind_jifen();
-  jifen_list.child(jifen_map["本地"]).child(3).click();
+  entry_jinfen_project("本地");
   fSet("title", "本地…");
   fClear();
   text("切换地区").findOne(5000);
@@ -1851,25 +1834,6 @@ function upload_wrong_exec(endstr) {
     }
   }
   dati_tiku.push([question, ans_txt, null, null, null]);
-  try {
-  	updateToServer(question,ans_txt);
-  }
-  catch (e) {log(e);}
-}
-
-// 上传题目：
-function updateToServer(question,answer) {
-  fInfo("开始上传");
-  var res = http.post("https://tiku.3141314.xyz/insertOrUpdate", 
-                      {"question": question,"answer": answer, "pswd": "X2417481092ZY"});
-  if (res.body.json()==200) {
-    fInfo("成功");
-    return true;
-  }
-  else {
-    log(res.body.string());
-    return false;
-  }
 }
 
 // 通过缓存题库获取答案
@@ -1962,7 +1926,7 @@ function restart(restart_flag) {
       // 0为每日答题
     case 0:
       text('登录').waitFor();
-      jifen_list.child(jifen_map["每日"]).child(3).click();
+      entry_jinfen_project("每日");
       break;
       // 1为每周答题
     case 1:
@@ -2230,10 +2194,16 @@ function login(username, pwd) {
 }
 
 function refind_jifen() {
-  let res = className("android.webkit.WebView").scrollable().findOne().scrollForward();
-  //log(res);
-  let jifen_obj = className("android.widget.ListView").depth(21).rowCount(14).findOne();
-  return jifen_obj
+  className("android.webkit.WebView").scrollable().findOne().scrollForward();
+  var a = className("android.widget.ListView").rowCount(14).findOne();
+  21 == a.depth() ? (jifen_flag = "old", fInfo("检测为旧版界面")) : 23 == a.depth() && (jifen_flag = "new", fInfo("检测为新版界面"));
+  return a
+}
+
+function entry_jinfen_project(a) {
+  if ("old" == jifen_flag) var b = 3;
+  else "new" == jifen_flag && (b = 4);
+  jifen_list.child(jifen_map[a]).child(b).click()
 }
 
 function winReshow() {
@@ -2407,19 +2377,6 @@ function xxqg(userinfo) {
     btn.click();
     fInfo("已取消消息通知");
   });
-//   var keepQG_thread = threads.start(function() {
-//     //在新线程执行的代码
-//     let packageName = getPackageName('学习强国');
-//     while (true) {
-//       try {
-//         if (currentPackage() != packageName) {
-//           fInfo("请切换回学习强国");
-//         }
-//         text("当做sleep方法").findOne(1000);
-//       } catch (e) {console.warn(e);}
-//     }
-//   });
-  /********登录*********/
   if (userinfo) {
     var [username, pwd, token] = userinfo;
     login(username, pwd);
@@ -2431,158 +2388,75 @@ function xxqg(userinfo) {
   fSet("username", name);
   back();
   ran_sleep();
-  if (meizhou == 1) {meizhou_dao = false;}
-  else if (meizhou == 0) {meizhou_dao = true;}
-  if (zhuanxiang == 1) {zhuanxiang_dao = false;}
-  else if (zhuanxiang == 0) {zhuanxiang_dao = true;}
-  if (dingyue == 1) {dingyue_dao = false;}
-  else if (dingyue == 2) {dingyue_dao = true;}
-
-  /********进入积分界面*********/
-  // 点击积分
+  "zhengxu" == meizhou ? meizhou_dao = !1 : "daoxu" == meizhou && (meizhou_dao = !0);
+  "zhengxu" == zhuanxiang ? zhuanxiang_dao = !1 : "daoxu" == zhuanxiang && (zhuanxiang_dao = !0);
+  "zhengxu" == dingyue ? dingyue_dao = !1 : "daoxu" == dingyue && (dingyue_dao = !0);
   id("comm_head_xuexi_score").findOne().click();
-  // 等待"登录"项目加载
-  // className("android.view.View").depth(24).text("登录").waitFor();
   text("登录").waitFor();
-  // 往下滑一段加载
-  //className("android.webkit.WebView").depth(18).findOne().scrollForward();
-  // jifen_list第一层child[0-14]为每一项，第二层child{0:项目名称; 1:积分规则; 2:已获分数; 3:跳转按钮}
   jifen_list = refind_jifen();
-  
-  // 中断地理位置弹窗检测
-  if (nolocate_thread.isAlive()) {
-    nolocate_thread.interrupt();
-    fInfo("终止位置权限弹窗检测");
+  nolocate_thread.isAlive() && (nolocate_thread.interrupt(), fInfo("终止位置权限弹窗检测"));
+  noupdate_thread.isAlive() && (noupdate_thread.interrupt(), fInfo("终止更新弹窗检测"));
+  d.isAlive() && (d.interrupt(), fInfo("终止消息通知检测"));
+  "true" == pinglun && ("old" == jifen_flag && "0" == jifen_list.child(jifen_map["评论"]).child(2).text().match(/\d+/)[0] || "new" == jifen_flag && "0" == jifen_list.child(jifen_map["评论"]).child(3).child(0).text()) && (toastLog("开始评论"), do_pinglun(), jifen_list = refind_jifen());
+  "true" == shipin && ("old" == jifen_flag && "已完成" != jifen_list.child(jifen_map["视频"]).child(3).text() || "new" ==
+      jifen_flag && "已完成" != jifen_list.child(jifen_map["视频"]).child(4).text()) && (console.verbose("无障碍服务：" + auto.service), toastLog("开始视听次数"), do_shipin(), jifen_list = refind_jifen());
+  "true" == wenzhang && ("old" == jifen_flag && "已完成" != jifen_list.child(jifen_map["文章"]).child(3).text() || "new" == jifen_flag && "已完成" != jifen_list.child(jifen_map["文章"]).child(4).text()) && (console.verbose("无障碍服务：" +
+      auto.service), toastLog("开始文章次数与时长"), do_wenzhang(), jifen_list = refind_jifen());
+  "true" == meiri && ("old" == jifen_flag && "已完成" != jifen_list.child(jifen_map["每日"]).child(3).text() || "new" == jifen_flag && "已完成" != jifen_list.child(jifen_map["每日"]).child(4).text()) && (toastLog("每日答题开始"), do_meiri(), jifen_list = refind_jifen());
+  noupdate_thread = 1;
+  if ("false" != meizhou && ("old" == jifen_flag && "0" == jifen_list.child(jifen_map["每周"]).child(2).text().match(/\d+/)[0] ||
+          "new" == jifen_flag && "0" == jifen_list.child(jifen_map["每周"]).child(3).child(0).text())) {
+      toastLog("每周答题开始");
+      for (c = do_meizhou(); !c;) c = do_meizhou();
+      jifen_list = refind_jifen()
   }
-  // 中断更新弹窗检测
-  if (noupdate_thread.isAlive()) {
-    noupdate_thread.interrupt();
-    fInfo("终止更新弹窗检测");
-  }
-  // 中断消息通知弹窗检测
-  if (nonotice_thread.isAlive()) {
-    nonotice_thread.interrupt();
-    fInfo("终止消息通知检测");
-  }
-
-  // 先判断评论分享
-  if (pinglun == true) {
-    //if (jifen_list.child(11).child(2).text().match(/\d+/)[0] == "0" || jifen_list.child(12).child(2).text().match(/\d+/)[0] == "0") {
-    if (jifen_list.child(jifen_map["评论"]).child(2).text().match(/\d+/)[0] == "0") {
-      toastLog("开始评论");
-      do_pinglun();
-      jifen_list = refind_jifen();
-    }
-  }
-  if (shipin == true && jifen_list.child(jifen_map["视频"]).child(3).text() != "已完成") { // 视听学习
-    console.verbose("无障碍服务："+auto.service);
-    toastLog("开始视听次数");
-    do_shipin();
-    jifen_list = refind_jifen();
-  }
-  if (wenzhang == true && jifen_list.child(jifen_map["文章"]).child(3).text() != "已完成") { // 文章
-    console.verbose("无障碍服务："+auto.service);
-    toastLog("开始文章次数与时长");
-    do_wenzhang();
-    jifen_list = refind_jifen();
-  }
-  if (meiri == true && jifen_list.child(jifen_map["每日"]).child(3).text() != "已完成") { // 每日答题
-    toastLog("每日答题开始");
-    do_meiri();
-    jifen_list = refind_jifen();
-  }
-  var meizhou_right = 1;
-  if (meizhou != 2 && jifen_list.child(jifen_map["每周"]).child(2).text().match(/\d+/)[0] == "0") { // 每周答题
-    toastLog("每周答题开始");
-    var meizhou_right = do_meizhou();
-    while (!meizhou_right) {meizhou_right = do_meizhou();}
-    jifen_list = refind_jifen();
-  }
-  var zhuanxiang_right = 1;
-  if (zhuanxiang != 2 && jifen_list.child(jifen_map["专项"]).child(2).text().match(/\d+/)[0] == "0") { // 专项答题
-    toastLog("专项答题开始");
-    var zhuanxiang_right = do_zhuanxiang();
-    jifen_list = refind_jifen();
-  }
-  if (tiaozhan == true && jifen_list.child(jifen_map["挑战"]).child(3).text() != "已完成") { // 挑战答题
-    toastLog("挑战答题开始");
-    do_tiaozhan();
-    jifen_list = refind_jifen();
-  }
-  // 四人赛前先ocr功能测试
-  var test_result = ocr_test();
-  if (test_result) {
-    //console.verbose("无障碍服务："+auto.service);
-    if (siren == true && parseInt(jifen_list.child(jifen_map["四人"]).child(2).text().match(/\d+/)[0]) <= 3) { // 四人两次
-      toastLog("四人赛开始");
-      if (guaji) { do_duizhan1(0); }
-      do_duizhan1(4);
-      do_duizhan1(4);
-      let dacuo_n = Number(dacuo_num);
-      if (dacuo_n) {
-        fSet("title", "平衡胜率…");
-        fClear();
-        console.info("开始平衡胜率，答错次数："+dacuo_n);
-        for (i=0; i<dacuo_n; i++) {
-          fInfo("答错第"+ (i+1) + "轮");
-          dacuo(4);
-          fClear();
-        }
+  "false" != zhuanxiang && ("old" == jifen_flag && "0" == jifen_list.child(jifen_map["专项"]).child(2).text().match(/\d+/)[0] || "new" == jifen_flag && "0" == jifen_list.child(jifen_map["专项"]).child(3).child(0).text()) && (toastLog("专项答题开始"), do_zhuanxiang(), jifen_list =
+      refind_jifen());
+  "true" == tiaozhan && ("old" == jifen_flag && "已完成" != jifen_list.child(jifen_map["挑战"]).child(3).text() || "new" == jifen_flag && "已完成" != jifen_list.child(jifen_map["挑战"]).child(4).text()) && (toastLog("挑战答题开始"), do_tiaozhan(), jifen_list = refind_jifen());
+  if (ocr_test()) {
+      if ("true" == siren && ("old" == jifen_flag && 3 >= parseInt(jifen_list.child(jifen_map["四人"]).child(2).text().match(/\d+/)[0]) || "new" == jifen_flag && 3 >= parseInt(jifen_list.child(jifen_map["四人"]).child(3).child(0).text()))) {
+          toastLog("四人赛开始");
+          guaji && do_duizhan1(0);
+          do_duizhan1(4);
+          do_duizhan1(4);
+          if (d = Number(dacuo_num))
+              for (fSet("title", "平衡胜率…"), fClear(), console.info("开始平衡胜率，答错次数：" + d), i = 0; i < d; i++) fInfo("答错第" + (i + 1) + "轮"), dacuo(4), fClear();
+          jifen_list = refind_jifen()
       }
-      jifen_list = refind_jifen();
-    }
-    if (shuangren == true && jifen_list.child(jifen_map["双人"]).child(2).text().match(/\d+/)[0] == "0") { // 双人对战
-      toastLog("双人对战开始");
-      do_duizhan1(2);
-      jifen_list = refind_jifen();
-    }
-  } else if (siren == true && shuangren == true) {
-    sign_list.push("ocr_false");
-  }
-  if (bendi == true && jifen_list.child(jifen_map["本地"]).child(3).text() != "已完成") {
-    toastLog("本地开始");
-    do_bendi();
-    jifen_list = refind_jifen();
-  }
-  var dingyue_right = 1;
-  if (dingyue != 0 && jifen_list.child(jifen_map["订阅"]).child(2).text().match(/\d+/)[0] == "0") { // 订阅
-    toastLog("订阅开始");
-    var dingyue_right = do_dingyue();
-    jifen_list = refind_jifen();
-  }
-  
-  if (meizhou != 2 && !meizhou_right) {
-    fError("每周答题可能由于识别错误、包含视频题而不能满分，请手动作答");
-  }
-  if (dingyue != 0 && !dingyue_right) {
-    fError("未能识别出订阅界面，订阅不支持学习强国V2.33.0以上版本");
-  }
-  // push+推送
-  if (pushplus || token) {
-    fInfo("推送前等待积分刷新5秒");
-    sleep(5000);
-    if (!token) { token = pushplus; }
-    try {send_pushplus(token, sign_list);}
-    catch (e) {fError(e+":push+推送失败，请尝试切换流量运行或者设置114DNS");}
+      "true" == shuangren && ("old" == jifen_flag && "0" == jifen_list.child(jifen_map["双人"]).child(2).text().match(/\d+/)[0] || "new" == jifen_flag && "0" == jifen_list.child(jifen_map["双人"]).child(3).child(0).text()) &&
+          (toastLog("双人对战开始"), do_duizhan1(2), jifen_list = refind_jifen())
+  } else "true" == siren && "true" == shuangren && sign_list.push("ocr_false");
+  "true" == bendi && ("old" == jifen_flag && "已完成" != jifen_list.child(jifen_map["本地"]).child(3).text() || "new" == jifen_flag && "已完成" != jifen_list.child(jifen_map["本地"]).child(4).text()) && (toastLog("本地开始"), do_bendi(), jifen_list = refind_jifen());
+  d = 1;
+  "false" != dingyue && ("old" == jifen_flag && "0" == jifen_list.child(jifen_map["订阅"]).child(2).text().match(/\d+/)[0] ||
+      "new" == jifen_flag && "0" == jifen_list.child(jifen_map["订阅"]).child(3).child(0).text()) && (toastLog("订阅开始"), d = do_dingyue(), jifen_list = refind_jifen());
+  "false" == meizhou || c || fError("每周答题可能由于识别错误、包含视频题而不能满分，请手动作答");
+  "false" == dingyue || d || fError("未能识别出订阅界面，订阅不支持学习强国V2.33.0以上版本");
+  if (pushplus || e) {
+      fInfo("推送前等待积分刷新5秒");
+      sleep(5E3);
+      e || (e = pushplus);
+      try {
+          send_pushplus(e, sign_list)
+      } catch (h) {
+          fError(h + ":push+推送失败，请尝试切换流量运行或者设置114DNS")
+      }
   }
   back();
-  if (!zhanghao) {return true}
-  // 退出登录
+  if (!zhanghao) return !0;
   text("我的").findOne().click();
   log("等待设置按钮");
-  let setting = id("my_setting").findOne();
-  sleep(1000);
+  b = id("my_setting").findOne();
+  sleep(1E3);
   log("点击设置按钮");
-  real_click(setting);
-  // log(setting.click());
+  real_click(b);
   log("等待退出登录");
-  let signout = id("setting_sign_out").findOne();
-  sleep(1000);
+  b = id("setting_sign_out").findOne();
+  sleep(1E3);
   log("点击退出登录");
-  real_click(signout);
-  // log(signout.click());
+  real_click(b);
   text("确认").findOne().click();
-  return true
+  return !0
 }
 
 function main(userinfo){
@@ -2623,7 +2497,8 @@ function main(userinfo){
 /********定义全局变量*********/
 var jifen_list, meizhou_dao, zhuanxiang_dao, dingyue_dao, storage_user, name, jinri, zongfen;
 var jifen_map = {"评论":10,"视频":2,"文章":1,"每日":4,"每周":13,"专项":5,"挑战":6,"四人":7,"双人":8,
-                "订阅":9,"本地":11}
+                "订阅":9,"本地":11},
+    jifen_flag = "old";
 // 分割账号
 var noverify_thread = noverify();
 if (zhanghao) {
