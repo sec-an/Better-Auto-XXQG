@@ -1945,18 +1945,10 @@ function restart(restart_flag) {
 
 // 从首页进入积分界面初始化
 function jifen_init() {
-  id("comm_head_xuexi_score").findOne().click();
-  while (true) {
-    let denglu = className("android.view.View").depth(24).text("登录").findOne(9000);
-    if (denglu) {break;}
-    back();
-    sleep(1000);
-    id("comm_head_xuexi_score").findOne().click();
-  }
+  for (id("comm_head_xuexi_score").findOne().click(); !className("android.view.View").text("登录").findOne(9E3);) back(), sleep(1E3), id("comm_head_xuexi_score").findOne().click();
   fRefocus();
   text("登录").waitFor();
-  className("android.webkit.WebView").scrollable().findOne().scrollForward();
-  //jifen_list = className("android.widget.ListView").depth(21).findOne();
+  className("android.webkit.WebView").scrollable().findOne().scrollForward()
 }
 
 // 模拟随机时间0.5-3秒，后期可以用户自定义
