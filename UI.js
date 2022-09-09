@@ -157,11 +157,9 @@ ui.layout(
                             <horizontal  gravity="center_vertical" padding="5 5" >
                                 <View bg="#00BFFF" h="*" w="10"  ></View>
                                 <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="是否启用第三方OCR插件" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="内置ocr很慢的可以试试(并没有内置的好)" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="需要提前安装，未安装会跳转浏览器下载" />
-                                </vertical>
-                                <checkbox id="ttxs_pro_ocr_plugin" marginLeft="4" marginRight="6" checked="false" />
+                                    <text w="auto" textColor="#222222" textSize="15sp" text="OCR选择" />
+                                    <spinner id="ttxs_pro_ocr_choice" marginLeft="4" marginRight="6" entries="GoogleMLKit|PaddleOCR|第三方插件" />
+                                </vertical> 
                             </horizontal>
                             <horizontal  gravity="center_vertical" padding="5 5" >
                                 <View bg="#00BFFF" h="*" w="10"  ></View>
@@ -627,7 +625,7 @@ ui.ttxs_pro_save.click(function () {
     TTXS_PRO_CONFIG.put("meizhou", ui.ttxs_pro_meizhou.getSelectedItemPosition());
     TTXS_PRO_CONFIG.put("zhuanxiang", ui.ttxs_pro_zhuanxiang.getSelectedItemPosition());
     TTXS_PRO_CONFIG.put("tiaozhan", ui.ttxs_pro_tiaozhan.isChecked());
-    TTXS_PRO_CONFIG.put("ocr_plugin", ui.ttxs_pro_ocr_plugin.isChecked());
+    TTXS_PRO_CONFIG.put("ocr_choice", ui.ttxs_pro_ocr_choice.getSelectedItemPosition());
     TTXS_PRO_CONFIG.put("ocr_maxtime", ui.ttxs_pro_ocr_maxtime.getText()+"");
     TTXS_PRO_CONFIG.put("duizhan_mode", ui.ttxs_pro_duizhan_mode.getSelectedItemPosition());
     TTXS_PRO_CONFIG.put("jisu", ui.ttxs_pro_jisu.getText()+"");
@@ -671,8 +669,8 @@ ui.ttxs_pro_reset.click(function () {
     ui.ttxs_pro_zhuanxiang.setSelection(TTXS_PRO_CONFIG.get("zhuanxiang"));
     TTXS_PRO_CONFIG.put("tiaozhan", true);
     ui.ttxs_pro_tiaozhan.setChecked(TTXS_PRO_CONFIG.get("tiaozhan"));
-    TTXS_PRO_CONFIG.put("ocr_plugin", false);
-    ui.ttxs_pro_ocr_plugin.setChecked(TTXS_PRO_CONFIG.get("ocr_plugin"));
+    TTXS_PRO_CONFIG.put("ocr_choice", 0);
+    ui.ttxs_pro_ocr_choice.setSelection(TTXS_PRO_CONFIG.get("ocr_choice"));
     TTXS_PRO_CONFIG.put("ocr_maxtime", "5000");
     ui.ttxs_pro_ocr_maxtime.setText(TTXS_PRO_CONFIG.get("ocr_maxtime"));
     TTXS_PRO_CONFIG.put("duizhan_mode", 0);
@@ -814,7 +812,7 @@ function Initialize() {
     ui.ttxs_pro_meizhou.setSelection(TTXS_PRO_CONFIG.get("meizhou", 0));
     ui.ttxs_pro_zhuanxiang.setSelection(TTXS_PRO_CONFIG.get("zhuanxiang", 0));
     ui.ttxs_pro_tiaozhan.setChecked(TTXS_PRO_CONFIG.get("tiaozhan", true));
-    ui.ttxs_pro_ocr_plugin.setChecked(TTXS_PRO_CONFIG.get("ocr_plugin", false));
+    ui.ttxs_pro_ocr_choice.setSelection(TTXS_PRO_CONFIG.get("ocr_choice", 0));
     ui.ttxs_pro_ocr_maxtime.setText(TTXS_PRO_CONFIG.get("ocr_maxtime", "5000"));
     ui.ttxs_pro_duizhan_mode.setSelection(TTXS_PRO_CONFIG.get("duizhan_mode", 0));
     ui.ttxs_pro_jisu.setText(TTXS_PRO_CONFIG.get("jisu", "0"));

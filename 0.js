@@ -16,7 +16,7 @@ var meiri = TTXS_PRO_CONFIG.get("meiri", true);
 var meizhou = TTXS_PRO_CONFIG.get("meizhou", 0);
 var zhuanxiang = TTXS_PRO_CONFIG.get("zhuanxiang", 0);
 var tiaozhan = TTXS_PRO_CONFIG.get("tiaozhan", true);
-var ocr_plugin = TTXS_PRO_CONFIG.get("ocr_plugin", false);
+var ocr_choice = TTXS_PRO_CONFIG.get("ocr_choice", 0);
 var ocr_maxtime = TTXS_PRO_CONFIG.get("ocr_maxtime", "5000");
 var duizhan_mode = TTXS_PRO_CONFIG.get("duizhan_mode", 0);
 var jisu = TTXS_PRO_CONFIG.get("jisu", "0");
@@ -30,6 +30,46 @@ var pushplus = TTXS_PRO_CONFIG.get("pushplus", "");
 var yl_on = TTXS_PRO_CONFIG.get("yl_on", true);
 var yinliang = TTXS_PRO_CONFIG.get("yinliang", "0");
 var zhanghao = TTXS_PRO_CONFIG.get("zhanghao", "");
+
+function google_ocr_api(img) {
+  console.log('GoogleMLKit文字识别中');
+  let list = JSON.parse(JSON.stringify(gmlkit.ocr(img,"zh").toArray(3))); // 识别文字，并得到results
+  let eps = 30; // 坐标误差
+  for (
+      var i = 0; i < list.length; i++ // 选择排序对上下排序,复杂度O(N²)但一般list的长度较短只需几十次运算
+  ) {
+      for (var j = i + 1; j < list.length; j++) {
+          if (list[i]['bounds']['bottom'] > list[j]['bounds']['bottom']) {
+              var tmp = list[i];
+              list[i] = list[j];
+              list[j] = tmp;
+          }
+      }
+  }
+
+  for (
+      var i = 0; i < list.length; i++ // 在上下排序完成后，进行左右排序
+  ) {
+      for (var j = i + 1; j < list.length; j++) {
+          // 由于上下坐标并不绝对，采用误差eps
+          if (
+              Math.abs(list[i]['bounds']['bottom'] - list[j]['bounds']['bottom']) <
+              eps &&
+              list[i]['bounds']['left'] > list[j]['bounds']['left']
+          ) {
+              var tmp = list[i];
+              list[i] = list[j];
+              list[j] = tmp;
+          }
+      }
+  }
+  let res = '';
+  for (var i = 0; i < list.length; i++) {
+      res += list[i]['text'];
+  }
+  list = null;
+  return res;
+}
 
 function paddle_ocr_api() {
   console.log('PaddleOCR文字识别中');
@@ -66,7 +106,7 @@ function paddle_ocr_api() {
   }
   let res = '';
   for (var i = 0; i < list.length; i++) {
-      res += list[i]['words'];
+      res += list[i]['text'];
   }
   list = null;
   return res;
@@ -97,7 +137,7 @@ fInfo("天天向上Pro"+newest_version+"脚本初始化");
 var [device_w, device_h] = init_wh();
 // log("fina:", device_w, device_h);
 // OCR初始化，重写内置OCR module
-if (ocr_plugin) {
+if (ocr_choice == 2) {
   fInfo("初始化第三方ocr插件");
   try {
     ocr = plugins.load("com.hraps.ocr");
@@ -980,7 +1020,9 @@ function do_duizhan1(renshu) {
       // 为了适配OCR插件改为下面这句
       console.time('题目识别');
       
-    if (!ocr_plugin) {
+    if (ocr_choice == 0) {
+        var que_txt = google_ocr_api(que_img).replace(/[^\u4e00-\u9fa5\d]|\d{1,2}\./g, "");
+    } else if (ocr_choice == 1) {
         var que_txt = paddle_ocr_api(que_img).replace(/[^\u4e00-\u9fa5\d]|\d{1,2}\./g, "");
     } else {
         var que_txt = ocr.recognizeText(que_img).replace(/[^\u4e00-\u9fa5\d]|\d{1,2}\./g, "");
@@ -1091,12 +1133,15 @@ function do_duizhan1(renshu) {
 		//images.save(allx_img, '/sdcard/1/x_img' + num + '.png');
     let xuan_txt_list = [];
     let allx_txt = "";
-    if (!ocr_plugin) {
+    if (ocr_choice == 0) {
       // 排序顺序
       //     console.time('选项识别1');
-      let x_results = JSON.parse(JSON.stringify(paddle.ocr(img)));
+      let x_results = JSON.parse(JSON.stringify(gmlkit.ocr(img,"zh").toArray(3)));
       allx_txt = ocr_rslt_to_txt(x_results).replace(/\s+/g, "");
       //     console.timeEnd('选项识别1');
+    } else if (ocr_choice == 1) {
+      let x_results = JSON.parse(JSON.stringify(paddle.ocr(img)));
+      allx_txt = ocr_rslt_to_txt(x_results).replace(/\s+/g, "");
     } else {
 //     // 直接识别
 //     console.time('选项识别2');
@@ -1669,7 +1714,9 @@ function get_ans_by_ocr1() {
 //   let resp = ocr.recognize(img).results;
 //   ans = ocr_rslt_to_txt(resp);
   // 为适配第三方OCR改动
-  if (!ocr_plugin) {
+  if (ocr_choice == 0) {
+    ans = google_ocr_api(img);
+  } else if (ocr_choice == 1) {
     ans = paddle_ocr_api(img);
   } else {
     ans = ocr.recognizeText(img);
@@ -1898,13 +1945,13 @@ function ocr_rslt_to_txt(result) {
     if (top == 0) {top = result[idx].bounds.top;}
     if (previous_left == 0) {previous_left = result[idx].bounds.left;}
     if (result[idx].bounds.top >= top-10 && result[idx].bounds.top <= top+10) {
-      if (result[idx].bounds.left > previous_left) {txt = txt + "   " + result[idx].words;}
-      else {txt = result[idx].words + "   " + txt;}
+      if (result[idx].bounds.left > previous_left) {txt = txt + "   " + result[idx].text;}
+      else {txt = result[idx].text + "   " + txt;}
     }
     else {
       top = result[idx].bounds.top;
       txt_list.push(txt);
-      txt = result[idx].words;
+      txt = result[idx].text;
     }
     if (idx == result.length-1) {txt_list.push(txt);}
     previous_left = result[idx].bounds.left;
@@ -2033,7 +2080,9 @@ function ocr_test() {
     //console.time("OCR识别结束");
     let begin=new Date();
     
-    if (!ocr_plugin) {
+    if (ocr_choice == 0) {
+      let test_txt  = google_ocr_api(img_test);
+    } else if (ocr_choice == 1){
       let test_txt  = paddle_ocr_api(img_test);
     } else {
       let test_txt  = ocr.recognizeText(img_test);
