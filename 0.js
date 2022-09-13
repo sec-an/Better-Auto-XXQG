@@ -2111,8 +2111,8 @@ function ocr_test() {
 
 // pushplus推送
 function send_pushplus(token, sign_list) {
+  "old" == jifen_flag ? (zongfen = text("成长总积分").findOne().parent().child(3).text()) : "new" == jifen_flag && (zongfen = text("成长总积分").findOne().parent().child(1).text());
   jinri = jifen_list.parent().child(1).text().match(/\d+/g)[0];
-  zongfen = text("成长总积分").findOne().parent().child(3).text();
   let style_str = '<style>.item{height:1.5em;line-height:1.5em;}.item span{display:inline-block;padding-left:0.4em;}\
 .item .bar{width:100px;height:10px;background-color:#ddd;border-radius:5px;display:inline-block;}\
 .item .bar div{height:10px;background-color:#ed4e45;border-radius:5px;}</style>';
@@ -2121,14 +2121,16 @@ function send_pushplus(token, sign_list) {
   	if (sign == "ocr_false") { content_str = '由于ocr过慢，已跳过多人对战'+content_str; }
   }
   for (let option of jifen_list.children()) {
-    let title = option.child(0).child(0).text();
-    if (title == "专项答题") {
-      var score = option.child(2).text().match(/\d+/g)[0];
-      var total = 10;
-    } else {
-      var score = option.child(2).text().match(/\d+/g)[0];
-      var total = option.child(2).text().match(/\d+/g)[1];
-    }
+    if ("old" == jifen_flag)
+      var title = option.child(0).child(0).text(),
+      score = option.child(2).text().match(/\d+/g)[0],
+      total = option.child(2).text().match(/\d+/g)[1];
+    else
+      "new" == jifen_flag &&
+      ((title = option.child(0).text()),
+        (score = option.child(3).child(0).text()),
+        (total = option.child(3).child(2).text().match(/\d+/g)[0]));
+    "专项答题" == title && (total = 10);
     let percent = (Number(score)/Number(total)*100).toFixed() + '%';
     let detail = title+": "+score+"/"+total;
     content_str += '<div class="item"><div class="bar"><div style="width: '+percent+';"></div></div><span>'+detail+'</span></div>';
@@ -2137,7 +2139,7 @@ function send_pushplus(token, sign_list) {
   let r = http.postJson("http://www.pushplus.plus/send", {
     token: token,
     title: "天天向上："+name,
-    content: content_str,
+    content: content_str + "</div><style>.item{height:1.5em;line-height:1.5em;}.item span{display:inline-block;padding-left:0.4em;}.item .bar{width:100px;height:10px;background-color:#ddd;border-radius:5px;display:inline-block;}.item .bar div{height:10px;background-color:#ed4e45;border-radius:5px;}</style>",
     template: "markdown",
   });
   if (r.body.json()["code"] == 200) {fInfo("推送成功");}
