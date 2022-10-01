@@ -120,7 +120,7 @@ var storage = storages.create('songgedodo');
 // 脚本版本号
 var last_version = "V10.11";
 var engine_version = "V11.0";
-var newest_version = "V11.0";
+var newest_version = "V11.1";
 if (storage.get(engine_version, true)) {
   storage.remove(last_version);
   let gengxin_rows = ["最新版本强国APP不支持多人对战，切勿更新！",
@@ -1870,16 +1870,6 @@ function upload_wrong_exec(endstr) {
   let question = que_txt.replace(/\s/g, "");
   if (endstr) {ans_txt += endstr;}
   fError("错题:" + question + ans_txt);
-  //dati_tiku.unshift([question, ans_txt, null, null, null]);
-  for (let ti of dati_tiku) {
-    if (ti[0] == question) {
-      console.info("题库已有此题");
-      if (ti[1] == ans_txt) {
-        console.info("并且答案一样，已跳过");
-        return false
-      }
-    }
-  }
   dati_tiku.push([question, ans_txt, null, null, null]);
 }
 
@@ -1911,7 +1901,12 @@ function get_ans_by_tiku(que_txt) {
 function get_tiku_by_http(link) {
   // 通过gitee的原始数据保存题库
   if (!link) {link = "https://mart-17684809426.coding.net/p/tiku/d/tiku/git/raw/master/tiku_json.txt"}
-  let req = http.get(link);
+  let req = http.get(link, {
+    headers: {
+      "Accept-Language": "zh-cn,zh;q=0.5",
+      "User-Agent": random(0, 17),
+    },
+  });
   log(req.statusCode);
   // 更新题库时若获取不到，则文件名+1
   if (req.statusCode != 200) {
