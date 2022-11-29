@@ -196,6 +196,13 @@ ui.layout(
                             <horizontal  gravity="center_vertical" padding="5 5" >
                                 <View bg="#00BFFF" h="*" w="10"  ></View>
                                 <vertical padding="10 8" h="auto" w="0" layout_weight="1">
+                                    <text w="auto" textColor="#222222" textSize="15sp" text="太空三人行" />
+                                </vertical> 
+                                <checkbox id="ttxs_pro_sanren" marginLeft="4" marginRight="6" checked="true" />
+                            </horizontal>
+                            <horizontal  gravity="center_vertical" padding="5 5" >
+                                <View bg="#00BFFF" h="*" w="10"  ></View>
+                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
                                     <text w="auto" textColor="#222222" textSize="15sp" text="四人赛" />
                                 </vertical>
                                 <checkbox id="ttxs_pro_siren" marginLeft="4" marginRight="6" checked="true" />
@@ -634,6 +641,7 @@ ui.ttxs_pro_save.click(function () {
     TTXS_PRO_CONFIG.put("duizhan_mode", ui.ttxs_pro_duizhan_mode.getSelectedItemPosition());
     TTXS_PRO_CONFIG.put("jisu", ui.ttxs_pro_jisu.getText()+"");
     TTXS_PRO_CONFIG.put("guaji", ui.ttxs_pro_guaji.isChecked());
+    TTXS_PRO_CONFIG.put("sanren", ui.ttxs_pro_sanren.isChecked());
     TTXS_PRO_CONFIG.put("siren", ui.ttxs_pro_siren.isChecked());
     TTXS_PRO_CONFIG.put("dacuo_num", ui.ttxs_pro_dacuo_num.getText()+"");
     TTXS_PRO_CONFIG.put("shuangren", ui.ttxs_pro_shuangren.isChecked());
@@ -683,6 +691,8 @@ ui.ttxs_pro_reset.click(function () {
     ui.ttxs_pro_jisu.setText(TTXS_PRO_CONFIG.get("jisu"));
     TTXS_PRO_CONFIG.put("guaji", true);
     ui.ttxs_pro_guaji.setChecked(TTXS_PRO_CONFIG.get("guaji"));
+    TTXS_PRO_CONFIG.put("sanren", true);
+    ui.ttxs_pro_sanren.setChecked(TTXS_PRO_CONFIG.get("sanren"));
     TTXS_PRO_CONFIG.put("siren", true);
     ui.ttxs_pro_siren.setChecked(TTXS_PRO_CONFIG.get("siren"));
     TTXS_PRO_CONFIG.put("dacuo_num", "2");
