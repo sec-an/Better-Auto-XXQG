@@ -2464,6 +2464,15 @@ function xxqg(userinfo) {
           guaji && do_duizhan1(0);
           do_duizhan1(4);
           do_duizhan1(4);
+          do_duizhan1(4);
+          do_duizhan1(4);
+          do_duizhan1(4);
+          do_duizhan1(4);
+          do_duizhan1(4);
+          do_duizhan1(4);
+          do_duizhan1(4);
+          do_duizhan1(4);
+
           if (d = Number(dacuo_num))
               for (fSet("title", "平衡胜率…"), fClear(), console.info("开始平衡胜率，答错次数：" + d), i = 0; i < d; i++) fInfo("答错第" + (i + 1) + "轮"), dacuo(4), fClear();
           jifen_list = refind_jifen()
