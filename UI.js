@@ -27,7 +27,7 @@ ui.layout(
                                         <text text="脚本选择" textColor="#222222" textSize="16sp" maxLines="1" />
                                         <text text="切换脚本后需在配置页设置" textColor="#999999" textSize="14sp" maxLines="1" />
                                     </vertical>
-                                    <spinner id="script_chosen" marginLeft="4" marginRight="6" entries="天天向上Pro|天天向上|Study改" />
+                                    <spinner id="script_chosen" marginLeft="4" marginRight="6" entries="天天向上Pro|天天向上|Study改|四人答题" />
                                 </horizontal>
                             </card>
                             <card w="*" h="70" margin="10 5" cardCornerRadius="2dp" cardElevation="1dp" foreground="?selectableItemBackground">
@@ -281,6 +281,18 @@ ui.layout(
                                 <checkbox id="test_article1" marginLeft="4" marginRight="6" checked="true" />
                             </horizontal>
                         </vertical>
+                        <vertical id="custom_bsx" gravity="center">
+                             <horizontal  gravity="center_vertical" padding="5 5" >
+                                <View bg="#00BFFF" h="*" w="10"  ></View>
+                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
+                                    <text w="auto" textColor="#222222" textSize="15sp" text="四人/双人不受积分限制开关" />
+                                </vertical> 
+                                <checkbox id="custom_bsx_unlimited" marginLeft="4" marginRight="6" checked="true" />
+                            </horizontal>
+                             <horizontal>
+                                <button style="Widget.AppCompat.Button.Colored" id="custom_bsx_save" text="保存配置" padding="12dp" w="*" />
+                            </horizontal>
+                        </vertical>
                         <vertical id="study" gravity="center">
                             <horizontal  gravity="center_vertical" padding="5 5" >
                                 <View bg="#00BFFF" h="*" w="10"  ></View>
@@ -396,14 +408,14 @@ ui.layout(
                             <horizontal  gravity="center_vertical" padding="5 5" >
                                 <View bg="#00BFFF" h="*" w="10"  ></View>
                                 <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="百度OCR的API Key" />
+                                    <text w="auto" textColor="#222222" textSize="15sp" text="百度OCR的API Key" />
                                     <input id="study_AK" text=""  gravity="center" textSize="13sp" />
                                 </vertical> 
                             </horizontal>
                             <horizontal  gravity="center_vertical" padding="5 5" >
                                 <View bg="#00BFFF" h="*" w="10"  ></View>
                                 <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="百度OCR的Secret Key" />
+                                    <text w="auto" textColor="#222222" textSize="15sp" text="百度OCR的Secret Key" />
                                     <input id="study_SK" text=""  gravity="center" textSize="13sp" />
                                 </vertical> 
                             </horizontal>
@@ -456,7 +468,7 @@ ui.layout(
                             <horizontal  gravity="center_vertical" padding="5 5" >
                                 <View bg="#00BFFF" h="*" w="10"  ></View>
                                 <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="push+ 消息推送" />
+                                    <text w="auto" textColor="#222222" textSize="15sp" text="push+ 消息推送" />
                                     <text w="auto" textColor="#999999" textSize="12sp" text="注：有需要的自行填写push+的Token，否则留空即可" />
                                     <input id="study_Token" text="" textSize="13sp" />
                                 </vertical> 
@@ -540,16 +552,23 @@ var script_chosen_Listener = new android.widget.AdapterView.OnItemSelectedListen
             ui.ttxs.visibility = 8;
             ui.study.visibility = 8;
             ui.ttxs_pro.visibility = 0;
+            ui.custom_bsx.visibility = 8;
         }
         else if (ui.script_chosen.getSelectedItemPosition() == 1) {
             ui.ttxs_pro.visibility = 8;
             ui.study.visibility = 8;
             ui.ttxs.visibility = 0;
-        }
-        else if (ui.script_chosen.getSelectedItemPosition() == 2) {
+            ui.custom_bsx.visibility = 8;
+        } else if (ui.script_chosen.getSelectedItemPosition() == 2) {
             ui.ttxs_pro.visibility = 8;
             ui.ttxs.visibility = 8;
             ui.study.visibility = 0;
+            ui.custom_bsx.visibility = 8;
+        } else if (ui.script_chosen.getSelectedItemPosition() == 3) {
+            ui.ttxs_pro.visibility = 8;
+            ui.ttxs.visibility = 8;
+            ui.study.visibility = 8;
+            ui.custom_bsx.visibility = 0;
         }
         GLOBAL_CONFIG.put("script_chosen", ui.script_chosen.getSelectedItemPosition());
     }
@@ -610,7 +629,7 @@ ui.start.click(function () {
         return;
     }
     threads.start(function () {
-        let url = 'https://ghproxy.com/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/'+ui.script_chosen.getSelectedItemPosition()+'.js';
+        let url = 'https://ghproxy.com/https://raw.githubusercontent.com/baishixian/Better-Auto-XXQG/main/'+ui.script_chosen.getSelectedItemPosition()+'.js';
         execution = engines.execScript("强国助手", http.get(url).body.string());
     });
 });
@@ -800,9 +819,16 @@ ui.study_baiduregister.click(function () {
     app.openUrl("https://cloud.baidu.com/doc/OCR/s/dk3iqnq51");
 });
 
+// 保存study脚本设置
+ui.custom_bsx_save.click(function () {
+    GLOBAL_CONFIG.put("foursome_unlimited", ui.custom_bsx_unlimited.isChecked());
+    toastLog("配置保存成功！");
+});
+
 // 读取脚本设置
 function Initialize() {
     ui.script_chosen.setSelection(GLOBAL_CONFIG.get("script_chosen", 0));
+    ui.custom_bsx_unlimited.setText(GLOBAL_CONFIG.get("foursome_unlimited", true));
 
     ui.ttxs_pro_watchdog.setText(TTXS_PRO_CONFIG.get("watchdog", "1800"));
     ui.ttxs_pro_slide_verify.setText(TTXS_PRO_CONFIG.get("slide_verify", "300"));
