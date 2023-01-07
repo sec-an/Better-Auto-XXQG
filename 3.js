@@ -29,6 +29,9 @@ var pushplus = "";
 var yl_on = true;
 var yinliang = 0;
 var zhanghao = "";
+
+var GLOBAL_CONFIG = storages.create("GLOBAL_CONFIG");
+
 // 四人赛无限模式
 var custom_bsx_unlimited = GLOBAL_CONFIG.get("foursome_unlimited", true);
 
