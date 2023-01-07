@@ -285,7 +285,7 @@ ui.layout(
                              <horizontal  gravity="center_vertical" padding="5 5" >
                                 <View bg="#00BFFF" h="*" w="10"  ></View>
                                 <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="四人/双人不受积分限制开关" />
+                                    <text w="auto" textColor="#222222" textSize="15sp" text="四人不受积分限制开关" />
                                 </vertical> 
                                 <checkbox id="custom_bsx_unlimited" marginLeft="4" marginRight="6" checked="true" />
                             </horizontal>
@@ -830,7 +830,7 @@ ui.custom_bsx_save.click(function () {
 // 读取脚本设置
 function Initialize() {
     ui.script_chosen.setSelection(GLOBAL_CONFIG.get("script_chosen", 0));
-    ui.custom_bsx_unlimited.setText(GLOBAL_CONFIG.get("foursome_unlimited", true));
+    ui.custom_bsx_unlimited.setChecked(GLOBAL_CONFIG.get("foursome_unlimited", true));
 
     ui.ttxs_pro_watchdog.setText(TTXS_PRO_CONFIG.get("watchdog", "1800"));
     ui.ttxs_pro_slide_verify.setText(TTXS_PRO_CONFIG.get("slide_verify", "300"));
