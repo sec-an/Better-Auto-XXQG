@@ -500,7 +500,9 @@ var execution = "";
 var thread = null;
 Initialize();
 
-// 屏蔽 版本更新检查
+////
+// 屏蔽版本更新检查
+
 // var apkurl = "https://gh.fakev.cn/sec-an/Better-Auto-XXQG/releases/download/v2.2.0/v2.2.0.apk";
 // var latest_version = "2.2.0";
 // if (GLOBAL_CONFIG.get("NO_UPDATE", 0) && (app.versionName != latest_version)) {
