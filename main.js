@@ -4,7 +4,7 @@ http.__okhttp__.setTimeout(10000);
 
 let url = [
     'https://gh-proxy.com/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/UI.js',
-    "https://raw.gh.fakev.cn/sec-an/Better-Auto-XXQG/main/UI.js",
+    "https://ghproxy.com/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/UI.js",
     'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/UI.js',
     'https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/UI.js',
 ];
@@ -19,7 +19,9 @@ for (var i = 0; i < url.length; i++) {
         } else {
             toastLog('UI脚本:地址' + i + '下载失败');
         }
-    } catch (error) {}
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 engines.execScript("UI", UI);

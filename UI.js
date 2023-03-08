@@ -489,7 +489,7 @@ var thread = null;
 Initialize();
 
 // 版本更新检查
-var apkurl = "https://gh.fakev.cn/sec-an/Better-Auto-XXQG/releases/download/v2.2.0/v2.2.0.apk";
+var apkurl = "https://gh-proxy.com/https://github.com/sec-an/Better-Auto-XXQG/releases/download/v2.2.0/v2.2.0.apk";
 var latest_version = "2.2.0";
 if (GLOBAL_CONFIG.get("NO_UPDATE", 0) && (app.versionName != latest_version)) {
     ui.update.visibility = 0;
@@ -608,8 +608,7 @@ ui.start.click(function () {
         return;
     }
     threads.start(function () {
-        let url = 'https://gh-proxy.com/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/' + ui.script_chosen.getSelectedItemPosition() + '.js';
-        execution = engines.execScript("强国助手", http.get(url).body.string());
+        execution = engines.execScript("强国助手", getScript(ui.script_chosen.getSelectedItemPosition()));
     });
 });
 
@@ -954,4 +953,28 @@ function startDownload(url) {
         //自动打开进行安装
         app.viewFile(path);
     })
+}
+
+function getScript(choice) {
+    let url_prefix = [
+        'https://gh-proxy.com/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/',
+        "https://ghproxy.com/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/",
+        'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/',
+        'https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/',
+    ];
+    for (var i = 0; i < url_prefix.length; i++) {
+        try {
+            let res = http.get(url_prefix[i] + choice + ".js");
+            console.log(i, ":" + res.statusCode);
+            if (res.statusCode == 200) {
+                var UI = res.body.string();
+                if (UI.indexOf('auto.waitFor();') == 0) break;
+            } else {
+                toastLog('学习脚本:地址' + i + '下载失败');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    return UI;
 }
