@@ -2401,7 +2401,7 @@ function noverify() {
   let noverify_thread = threads.start(function () {
     //在新线程执行的代码
     while (true) {
-      textContains("访问异常").waitFor();
+      textContains("请按照说明拖动滑块").waitFor();
       fInfo("检测到滑动验证");
       if (!Number(slide_verify)) {
         fInfo("未开启自动验证");
@@ -2409,30 +2409,42 @@ function noverify() {
       } else {
         var delay = Number(slide_verify);
       }
-      var bound = idContains("nc_1_n1t").findOne().bounds();
-      var hua_bound = text("向右滑动验证").findOne().bounds();
-      var x_start = bound.centerX();
-      var dx = x_start - hua_bound.left;
-      var x_end = hua_bound.right - dx;
-      var x_mid = (x_end - x_start) * random(5, 8) / 10 + x_start;
-      var back_x = (x_end - x_start) * random(2, 3) / 10;
-      var y_start = random(bound.top, bound.bottom);
-      var y_end = random(bound.top, bound.bottom);
-      log("y_start:", y_start, "x_start:", x_start, "x_mid:", x_mid, "x_end:", x_end);
+      text("请按照说明拖动滑块").waitFor();
+      let bound = textContains("请按照说明拖动滑块").findOne().parent().child(1).bounds();
+      let hua_bound = text("请按照说明拖动滑块").findOne().bounds();
+      let x_start = bound.centerX();
+      let dx = x_start - hua_bound.left;
+      let x_end = (hua_bound.right - dx) * random(5.1, 6.0) / 10; // “hua_bound.right - dx”表示拖动到最后，为了准确率更高点 拖动到一半左右即可
+      let x_mid = (x_end - x_start) * random(5, 7) / 10 + x_start;
+      let back_x = (x_end - x_start) * random(2, 3) / 10;
+      let y_start = random(bound.top, bound.bottom);
+      let y_end = random(bound.top, bound.bottom);
+      // log("y_start:", y_start, "x_start:", x_start, "x_mid:", x_mid, "x_end:", x_end);
       x_start = random(x_start - 7, x_start);
       x_end = random(x_end, x_end + 10);
-      //       sleep(600);
-      //       press(x_start, y_start, 200);
-      //       sleep(200);
-      gesture(random(delay, delay + 50), [x_start, y_start], [x_mid, y_end], [x_mid - back_x, y_start], [x_end, y_end]);
+      gesture(random(delay, delay + 200), [x_start, y_start], [x_end, y_end]);
       //swipe(x_start, y_start, x_end, y_end, random(900,1000));
-      sleep(500);
+      sleep(random(1000, 1500));
+      while (textContains("滑动位置不对哦，请再试一次").exists()) {
+        text("请按照说明拖动滑块").waitFor();
+        text("icon/24/icon_Y_shuaxin").findOne().parent().click();
+        sleep(random(1000, 1500));
+        continue;
+      }
       if (textContains("刷新").exists()) {
         click("刷新");
+        sleep(random(1000, 1500));
         continue;
       }
       if (textContains("网络开小差").exists()) {
         click("确定");
+        sleep(random(1000, 1500));
+        continue;
+      }
+      if (text("当前功能使用人数过多，请稍后重试").exists()) {
+        click("确定");
+        id("btn_next").findOne().click();
+        sleep(random(1000, 1500));
         continue;
       }
       fInfo("已完成滑动验证，若滑动失败请在Pro版配置中调整滑动时间");
