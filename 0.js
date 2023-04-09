@@ -2399,8 +2399,14 @@ function winReshow() {
 
 function noverify() {
   return threads.start(function () {
-    for (;;) fClear(), textContains("访问异常").waitFor(), fInfo("检测到滑动验证，请尽快滑动"), device.vibrate(2000), textContains("刷新").exists() ? click("刷新") : textContains("网络开小差").exists() ? click("确定") : sleep(1000)
-  })
+    for (;;) {
+      fClear();
+      textContains("访问异常").waitFor();
+      fInfo("检测到滑动验证，请尽快滑动");
+      device.vibrate(1000);
+      textContains("刷新").exists() ? click("刷新") : textContains("网络开小差").exists() ? click("确定") : sleep(1000)
+    }
+  });
 }
 
 function displayProp(obj) {
@@ -2708,6 +2714,7 @@ device.cancelKeepingAwake();
 // 震动提示
 device.vibrate(500);
 fInfo("十秒后关闭悬浮窗");
+device.cancelVibration();
 sleep(10000);
 console.hide();
 home();
