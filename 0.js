@@ -30,6 +30,7 @@ var pushplus = TTXS_PRO_CONFIG.get("pushplus", "");
 var yl_on = TTXS_PRO_CONFIG.get("yl_on", true);
 var yinliang = TTXS_PRO_CONFIG.get("yinliang", "0");
 var zhanghao = TTXS_PRO_CONFIG.get("zhanghao", "");
+var comment = TTXS_PRO_CONFIG.get("comment", "全心全意为人民服务|不忘初心，牢记使命|不忘初心，方得始终|永远坚持党的领导|富强、民主、文明、和谐|自由，平等，公正，法治");
 
 function google_ocr_api(img) {
   console.log('GoogleMLKit文字识别中');
@@ -120,15 +121,12 @@ sleep(delay_time);
 /*****************更新内容弹窗部分*****************/
 var storage = storages.create('songgedodo');
 // 脚本版本号
-var last_version = "V10.11";
-var engine_version = "V11.2";
-var newest_version = "V11.5";
+var last_version = "V12.0";
+var engine_version = "V12.3";
+var newest_version = "V12.4";
 if (storage.get(engine_version, true)) {
   storage.remove(last_version);
-  let gengxin_rows = ["最新版本强国APP不支持多人对战，切勿更新！",
-    "强国APP版本v2.33.0以上不支持订阅，可以在豌豆荚中下载历史版本",
-    "（点击取消不再提示）"
-  ];
+  let gengxin_rows = "脚本有风险，仅供学习交流;更新内容：;1.原脚本会进入“我的”界面获取用户名，区分历史刷过文章，现取消此设定;2.可自定义滑动验证界面震动提醒时间;3.禁止截屏会随机选一个选项;4.自定义评论内容;脚本测试环境：强国V2.45.0;联系方式：tg: t.me/wyqg_ttxs;（点击取消不再提示）".split(";");
   let is_show = confirm(engine_version + "版更新内容", gengxin_rows.join("\n"));
   if (!is_show) {
     storage.put(engine_version, false);
@@ -277,8 +275,11 @@ function do_pinglun() {
     fRefocus();
   }
   fInfo("评论框click: true");
-  let content_list = ["全心全意为人民服务", "不忘初心，牢记使命", "不忘初心，方得始终", "永远坚持党的领导", "富强、民主、文明、和谐", "自由，平等，公正，法治"];
-  classNameEndsWith("EditText").findOne().setText(content_list[random(0, content_list.length - 1)]);
+  let content_list = comment.split("|");
+  log("评论列表：", content_list);
+  content_list = content_list[random(0, content_list.length - 1)];
+  content_list || (fTips('评论内容不可设置为空，已重置为"不忘初心，牢记使命"'), content_list = "不忘初心，牢记使命");
+  classNameEndsWith("EditText").findOne().setText(content_list);
   sleep(1000);
   text("发布").findOne().click();
   sleep(1000);
@@ -324,12 +325,12 @@ function do_shipin() {
   }
   desc("百灵").findOne().click();
   let shu = text("竖").findOne();
-  sleep(1000);
+  sleep(1500);
   // 定位到整个百灵frame_box
   let frame_box = shu.parent().parent().parent().parent();
   textMatches(/\d{2}:\d{2}/).waitFor();
   let video_list = frame_box.findOne(className("android.widget.ListView"));
-  video_list.child(1).child(1).child(0).click();
+  video_list.child(1).child(1).child(0).click() || fInfo("尝试再次点击" + video_list.child(1).child(1).child(0).child(0).click());
   text("分享").waitFor();
   if (idContains("guide_view").findOne(1500)) {
     fInfo("检测到引导遮罩");
@@ -487,7 +488,7 @@ function do_wenzhang() {
         // 第6次停顿刷时间
         //console.show();   
         toastLog("正在刷时长程序未停止");
-        let shichang = 6 * random(55, 60);
+        let shichang = random(330, 360);
         fClear();
         fInfo("开始刷时长，总共" + shichang + "秒");
         let wait_time = 1;
@@ -812,28 +813,32 @@ function do_tiaozhan() {
     var a = !0,
       b = className("android.widget.Image").textStartsWith("total").findOne().parent();
     ran_sleep();
+    // do b.click(), sleep(500); while (textStartsWith("total").exists());
     b.click();
     className("android.widget.Image").textStartsWith("chanllenge").waitFor()
   }
-  let total = 0;
-  let max_total = 5;
-  if (ddtong) {
-    max_total += 10;
-  }
-  while (true) {
+  var total = 0, max_total = 5;
+  for (ddtong && (max_total += 10);;) {
     fClear();
     fInfo("第" + (total + 1) + "题");
-    // 等待选项列表
-    let xuan_list = className("android.widget.ListView").findOne().children();
-    // 获取题目
-    let que_txt = className("android.widget.ListView").findOne().parent().child(0).text();
-    //log(que_txt);
+    className("android.widget.ListView").waitFor();
+    ran_sleep();
+    try {
+      // 等待选项列表
+      var xuan_list = className("android.widget.ListView").findOne().children();
+      // 获取题目
+      var que_txt = className("android.widget.ListView").findOne().parent().child(0).text();
+      //log(que_txt);
+    } catch (p) {
+      log("error1:", p);
+      sleep(500);
+      continue;
+    }    
     // 获取答案列表，可能找到多个答案
     // let ans_list = get_ans_by_http(que_txt.replace(/来源：.*|出题单位：.+/, ""));
     let ans_list = get_ans_by_tiku(que_txt.replace(/[^\u4e00-\u9fa5\d]|来源：.+|出题单位：.+/g, ""));
     //     fInfo(que_txt.replace(/[^\u4e00-\u9fa5\d]|来源：.+|出题单位：.+/g, ""));
     //log("答案："+ans_list);
-    ran_sleep();
     if (total >= max_total) {
       // 题数数够了随便选
       fInfo("已答对" + max_total + "题，全选A");
@@ -1040,7 +1045,7 @@ function do_duizhan1(renshu) {
       continue;
     }
     //fTips("开始识别题目");
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 1; i++) {
       let img = captureScreen();
       // 裁剪题干区域，识别题干
       let que_img = images.clip(img, que_x, que_y, que_w, que_h);
@@ -1060,19 +1065,15 @@ function do_duizhan1(renshu) {
         var que_txt = ocr.recognizeText(que_img).replace(/[^\u4e00-\u9fa5\d]|\d{1,2}\./g, "");
       }
       console.timeEnd('题目识别');
-      if (!que_txt) {
-        images.save(img, '/sdcard/天天向上/' + renshu + '-' + num + '.png', 'png', 50);
-        images.save(que_img, '/sdcard/天天向上/' + renshu + '-' + num + '-q.png', 'png', 50);
-        fError("未识别出题目，图片保存至‘/sdcard/天天向上/’");
-        console.error("大概率无障碍服务失效" + auto.service);
-        console.error("题目框体范围：", que_x, que_y, que_w, que_h);
-        img.recycle();
-        que_img.recycle();
-      } else {
+      if (que_txt) {
         fInfo("题目识别：" + que_txt);
         img.recycle();
         que_img.recycle();
         break
+      } else {
+        fError("未识别出题目，可能被禁止截图或无障碍失效");
+        img.recycle();
+        que_img.recycle();
       }
     }
     if (renshu == 0) {
@@ -1191,8 +1192,7 @@ function do_duizhan1(renshu) {
     console.timeEnd("选项识别");
     // log(allx_txt);
     if (!allx_txt) {
-      images.save(img, '/sdcard/天天向上/' + renshu + '-' + num + '-a.png', 'png', 50);
-      log("识别不出选项文本，图片保存至‘/sdcard/天天向上/’");
+      log("识别不出选项文本，可能被禁止截图");
       err_flag = false;
       sleep(200);
       continue;
@@ -1295,9 +1295,9 @@ function do_duizhan1(renshu) {
         }
       }
     } else {
-      console.warn("未识别出选项");
+      fError("未识别出选项，随机选择");
+      className("android.widget.RadioButton").findOnce(random(0, radio_num - 1)).parent().click();
       err_flag = false;
-      sleep(200);
       continue;
     }
     num++;
@@ -2401,9 +2401,14 @@ function noverify() {
   return threads.start(function () {
     for (;;) {
       fClear();
+      if (Number(slide_verify)) var a = Number(slide_verify);
+      else {
+        fInfo("未开启震动提醒");
+        break
+      }
       textContains("访问异常").waitFor();
       fInfo("检测到滑动验证，请尽快滑动");
-      device.vibrate(1000);
+      device.vibrate(a);
       textContains("刷新").exists() ? click("刷新") : textContains("网络开小差").exists() ? click("确定") : sleep(1000)
     }
   });
@@ -2524,17 +2529,10 @@ function xxqg(userinfo) {
   if (userinfo) {
     var [username, pwd, token] = userinfo;
     login(username, pwd);
-  }
-  /********获取用户姓名并读取本地数据*********/
-  text("我的").findOne().click();
-  // name = id("my_display_name").findOne().text();
-  a = id("my_display_name").findOne(5000);
-  a || (f = confirm("无法识别内容", "检测到新版‘我的’界面，官方限制无法识别出内容，请退回xxqgV2.41.0版及以下%n点击确定跳转下载历史版本"),
-    sleep(800), back(), f && app.openUrl("https://www.wandoujia.com/apps/7920908/history_v23300"), exit());
-  name = a.text();
-  storage_user = storages.create('songgedodo:' + name);
+    storage_user = storages.create('songgedodo:' + username);
+    name = username.substr(0, 3) + "****" + username.substr(-4);
+  } else name = "", storage_user = storage;
   fSet("username", name);
-  back();
   ran_sleep();
   if (meizhou == 1) {
     meizhou_dao = false;
@@ -2592,23 +2590,27 @@ function xxqg(userinfo) {
   back();
   b = 1;
   if (2 != meizhou) {
-    toastLog("每周答题开始");
-    text("我的").findOne().click();
-    sleep(1000);
-    text("我要答题").findOne().parent().click();
-    sleep(1000);
-    for (b = do_meizhou(); !b;) b = do_meizhou();
-    text("我的").waitFor();
-    b || fError("每周答题可能由于识别错误、包含视频题而不能满分，请手动作答")
+    if (toastLog("每周答题开始"), text("我的").findOne().click(), sleep(1000), text("我要答题").findOne(3000)) {
+      text("我要答题").findOne().parent().click();
+      sleep(1000);
+      for (b = do_meizhou(); !b;) b = do_meizhou();
+      text("我的").waitFor();
+      b || fError("每周答题可能由于识别错误、包含视频题而不能满分，请手动作答")
+    } else fError("V2.42及以上不支持每周答题"), back(), ran_sleep();   
   }
   0 == dingyue || d || fError("未能识别出订阅界面，订阅不支持学习强国V2.33.0以上版本");
   if (!zhanghao) return !0;
-  text("我的").findOne().click();
+  b = text("我的").findOne();
+  log("mine:", b);
+  b.click();
   log("等待设置按钮");
-  b = id("my_setting").findOne();
-  sleep(1E3);
-  log("点击设置按钮");
-  real_click(b);
+  if (e = id("my_setting").findOne(3000)) sleep(1000), log("点击设置按钮"), real_click(e);
+  else {
+    swipe(device_w / 2, .8 * device_h, device_w / 2, .1 * device_h, 1000);
+    fInfo("minebounds: " + b.bounds());
+    sleep(6000);
+    do e = random(b.bounds().centerX(), b.bounds().right), c = b.bounds().centerY(), fInfo("点击设置按钮: " + e + "," + c), click(e, c); while (!id("setting_sign_out").findOne(1500))
+  }
   log("等待退出登录");
   b = id("setting_sign_out").findOne();
   sleep(1E3);
@@ -2646,7 +2648,7 @@ function main(userinfo) {
     } else {
       let xxqg_end = new Date();
       let spent_time = ((xxqg_end - xxqg_begin) / 1000).toFixed();
-      fInfo("本轮已正常结束，花费时间" + spent_time + "s");
+      fInfo("本轮已结束，花费时间" + spent_time + "s"), 600 > spent_time && fError("时间过短，请检查日志是报错导致脚本结束，正常结束请无视");
       return true
     }
   }

@@ -27,7 +27,7 @@ ui.layout(
                                         <text text="脚本选择" textColor="#222222" textSize="16sp" maxLines="1" />
                                         <text text="切换脚本后需在配置页设置" textColor="#999999" textSize="14sp" maxLines="1" />
                                     </vertical>
-                                    <spinner id="script_chosen" marginLeft="4" marginRight="6" entries="天天向上Pro|天天向上|Study改" />
+                                    <spinner id="script_chosen" marginLeft="4" marginRight="6" entries="天天向上Pro" />
                                 </horizontal>
                             </card>
                             <card w="*" h="70" margin="10 5" cardCornerRadius="2dp" cardElevation="1dp" foreground="?selectableItemBackground">
@@ -76,9 +76,8 @@ ui.layout(
                             <horizontal  gravity="center_vertical" padding="5 5" >
                                 <View bg="#00BFFF" h="*" w="10"  ></View>
                                 <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="滑动验证的滑动时间(ms)" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="空着或0不开启自动滑动验证，滑动分3段" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="中间会折返一下，总时间是填的数值*3" />
+                                    <text w="auto" textColor="#222222" textSize="15sp" text="发现滑动验证后的震动提醒时间(ms)" />
+                                    <text w="auto" textColor="#999999" textSize="12sp" text="空着或0不开启震动" />
                                 </vertical> 
                                 <input id="ttxs_pro_slide_verify" marginLeft="4" marginRight="6" text="300" textSize="13sp"  inputType="number" />
                             </horizontal>
@@ -111,6 +110,15 @@ ui.layout(
                                     <text w="auto" textColor="#222222" textSize="15sp" text="评论" />
                                 </vertical>
                                 <checkbox id="ttxs_pro_pinglun" marginLeft="4" marginRight="6" checked="true" />
+                            </horizontal>
+                            <horizontal  gravity="center_vertical" padding="5 5" >
+                                <View bg="#00BFFF" h="*" w="10"  ></View>
+                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
+                                    <text w="auto" textColor="#222222" textSize="15sp" text="评论内容" />
+                                    <text w="auto" textColor="#999999" textSize="12sp" text="随机选择一项作为评论内容，以竖线“|”分隔" />
+                                    <text w="auto" textColor="#999999" textSize="12sp" text="如果只有一项则每次评论都一样" />
+                                    <input id="ttxs_pro_comment" marginLeft="4" marginRight="6" text="全心全意为人民服务|不忘初心，牢记使命|不忘初心，方得始终|永远坚持党的领导|富强、民主、文明、和谐|自由，平等，公正，法治" textSize="13sp"  inputType="textMultiLine" />
+                                </vertical>
                             </horizontal>
                             <horizontal  gravity="center_vertical" padding="5 5" >
                                 <View bg="#00BFFF" h="*" w="10"  ></View>
@@ -272,202 +280,6 @@ ui.layout(
                                 <button style="Widget.AppCompat.Button.Colored" id="ttxs_pro_reset" text="恢复默认" padding="12dp" w="*" />
                             </horizontal>
                         </vertical>
-                        <vertical id="ttxs" gravity="center">
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="测试" />
-                                </vertical>
-                                <checkbox id="test_article1" marginLeft="4" marginRight="6" checked="true" />
-                            </horizontal>
-                        </vertical>
-                        <vertical id="study" gravity="center">
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="文章学习和广播收听" />
-                                </vertical>
-                                <checkbox id="study_article" marginLeft="4" marginRight="6" checked="true" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="视频学习" />
-                                    <spinner id="study_video" marginLeft="4" marginRight="6" entries="新百灵视频学习|看电视视频学习|百灵视频学习|不进行学习" />
-                                </vertical> 
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="每日答题" />
-                                </vertical> 
-                                <checkbox id="study_meiri" marginLeft="4" marginRight="6" checked="true" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="挑战答题" />
-                                </vertical> 
-                                <checkbox id="study_tiaozhan" marginLeft="4" marginRight="6" checked="true" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="专项答题" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="建议手动答题，否则不保证全对" />
-                                </vertical> 
-                                <checkbox id="study_checkbox_01" marginLeft="4" marginRight="6" checked="true" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="每周答题" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="建议手动答题，否则不保证全对" />
-                                </vertical> 
-                                <checkbox id="study_checkbox_02" marginLeft="4" marginRight="6" checked="true" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="滑块验证延迟" />
-                                </vertical> 
-                                <input id="study_huakuaidelay" marginLeft="4" marginRight="6" text="300" textSize="13sp"  inputType="number" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="四人赛" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="可在答题页选择OCR配置，默认本地OCR" />
-                                </vertical> 
-                                <checkbox id="study_checkbox_03" marginLeft="4" marginRight="6" checked="true" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="双人对抗" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="可在答题页选择OCR配置，默认本地OCR" />
-                                </vertical> 
-                                <checkbox id="study_shuangren" marginLeft="4" marginRight="6" checked="true" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="专项答题模式选择" /> 
-                                    <spinner id="study_select" marginLeft="4" marginRight="6" entries="不向下滑动，只答当天的题目,没有则返回|向下滑动，直到找到可答题的题目" />
-                                </vertical> 
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="每周答题模式选择" />
-                                    <spinner id="study_selectm" marginLeft="4" marginRight="6" entries="不向下滑动，只答当天的题目,没有则返回|向下滑动，直到找到可答题的题目" />
-                                </vertical> 
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="四人赛模式选择" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="注：一般手机本地识别速度大于云端，部分手机内置ocr识别较慢，请自行测试" />
-                                    <spinner id="study_select_01" marginLeft="4" marginRight="6" entries="内置PaddleOCR->推荐|百度OCR接口,在OCR页配置" />
-                                </vertical> 
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="四人/双人不受积分限制开关" />
-                                </vertical> 
-                                <checkbox id="study_xianzhi" marginLeft="4" marginRight="6" checked="false" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="四人/双人额外的随机答题次数(乱答)" />
-                                </vertical> 
-                                <input id="study_another" marginLeft="4" marginRight="6" text="1"  hint="乱答次数"  textSize="13sp"  inputType="number" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="每日、每周、专项答题增强模式" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="使用在线OCR识别答案" />
-                                    <spinner id="study_stronger" marginLeft="4" marginRight="6" entries="关闭|使用百度OCR识别答案" />
-                                </vertical> 
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="百度OCR的API Key" />
-                                    <input id="study_AK" text=""  gravity="center" textSize="13sp" />
-                                </vertical> 
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="百度OCR的Secret Key" />
-                                    <input id="study_SK" text=""  gravity="center" textSize="13sp" />
-                                </vertical> 
-                            </horizontal>
-                            <horizontal>
-                                <button style="Widget.AppCompat.Button.Colored" id="study_baidusave" text="保存并检查" padding="12dp" w="*" />
-                            </horizontal>
-                            <horizontal>
-                                <button style="Widget.AppCompat.Button.Colored" id="study_baidureset" text="清空" padding="12dp" w="*" />
-                            </horizontal>
-                            <horizontal>
-                                <button style="Widget.AppCompat.Button.Colored" id="study_baiduregister" text="注册百度智能云" padding="12dp" w="*" />
-                            </horizontal><horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="订阅" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="仅支持学习强国2.33.0及以下版本" />
-                                    <spinner id="study_ssub" marginLeft="4" marginRight="6" entries="关闭|翻遍全部，直到订阅完成|只查看上新" />
-                                </vertical> 
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="点点通刷满" />
-                                </vertical> 
-                                <checkbox id="study_diandian" marginLeft="4" marginRight="6" checked="false" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="看门狗(秒)" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="脚本运行的最长时间,超时/错误自动重启脚本" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="防止出现不可控错误,一般重启脚本即可解决" />
-                                </vertical> 
-                                <input id="study_alltime" marginLeft="4" marginRight="6" text="2000"  hint="秒"  textSize="13sp"  inputType="number" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="每篇文章学习时间" />
-                                </vertical> 
-                                <input id="study_time1" marginLeft="4" marginRight="6" text="61"  hint="秒"  textSize="13sp"  inputType="number" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="每个视频学习时间" />
-                                </vertical> 
-                                <input id="study_time2" marginLeft="4" marginRight="6" text="6"  hint="秒"  textSize="13sp"  inputType="number" />
-                            </horizontal>
-                            <horizontal  gravity="center_vertical" padding="5 5" >
-                                <View bg="#00BFFF" h="*" w="10"  ></View>
-                                <vertical padding="10 8" h="auto" w="0" layout_weight="1">
-                                    <text w="auto" textColor="#222222" textSize="15sp" text="push+ 消息推送" />
-                                    <text w="auto" textColor="#999999" textSize="12sp" text="注：有需要的自行填写push+的Token，否则留空即可" />
-                                    <input id="study_Token" text="" textSize="13sp" />
-                                </vertical> 
-                            </horizontal>
-                            <horizontal>
-                                <button style="Widget.AppCompat.Button.Colored" id="study_save" text="保存配置" padding="12dp" w="*" />
-                            </horizontal>
-                            <horizontal>
-                                <button style="Widget.AppCompat.Button.Colored" id="study_reset" text="恢复默认" padding="12dp" w="*" />
-                            </horizontal>
-                        </vertical>
                     </frame>
                 </ScrollView>
             </viewpager>
@@ -482,7 +294,6 @@ http.__okhttp__.setTimeout(10000);
 
 var GLOBAL_CONFIG = storages.create("GLOBAL_CONFIG");
 var TTXS_PRO_CONFIG = storages.create("TTXS_PRO_CONFIG");
-var STUDY_CONFIG = storages.create("STUDY_CONFIG");
 var BAIDUAPI = storages.create("BAIDUAPI");
 var execution = "";
 var thread = null;
@@ -536,19 +347,20 @@ ui.tabs.setupWithViewPager(ui.viewpager);
 var script_chosen_Listener = new android.widget.AdapterView.OnItemSelectedListener({
     onItemSelected: function (parent, view, position, id) {
         toastLog('选择脚本：' + ui.script_chosen.getSelectedItem());
-        if (ui.script_chosen.getSelectedItemPosition() == 0) {
-            ui.ttxs.visibility = 8;
-            ui.study.visibility = 8;
-            ui.ttxs_pro.visibility = 0;
-        } else if (ui.script_chosen.getSelectedItemPosition() == 1) {
-            ui.ttxs_pro.visibility = 8;
-            ui.study.visibility = 8;
-            ui.ttxs.visibility = 0;
-        } else if (ui.script_chosen.getSelectedItemPosition() == 2) {
-            ui.ttxs_pro.visibility = 8;
-            ui.ttxs.visibility = 8;
-            ui.study.visibility = 0;
-        }
+        ui.ttxs_pro.visibility = 0;
+        // if (ui.script_chosen.getSelectedItemPosition() == 0) {
+        //     ui.ttxs.visibility = 8;
+        //     ui.study.visibility = 8;
+        //     ui.ttxs_pro.visibility = 0;
+        // } else if (ui.script_chosen.getSelectedItemPosition() == 1) {
+        //     ui.ttxs_pro.visibility = 8;
+        //     ui.study.visibility = 8;
+        //     ui.ttxs.visibility = 0;
+        // } else if (ui.script_chosen.getSelectedItemPosition() == 2) {
+        //     ui.ttxs_pro.visibility = 8;
+        //     ui.ttxs.visibility = 8;
+        //     ui.study.visibility = 0;
+        // }
         GLOBAL_CONFIG.put("script_chosen", ui.script_chosen.getSelectedItemPosition());
     }
 })
@@ -620,6 +432,7 @@ ui.ttxs_pro_save.click(function () {
     TTXS_PRO_CONFIG.put("ddtong", ui.ttxs_pro_ddtong.isChecked());
     TTXS_PRO_CONFIG.put("is_exit", ui.ttxs_pro_is_exit.isChecked());
     TTXS_PRO_CONFIG.put("pinglun", ui.ttxs_pro_pinglun.isChecked());
+    TTXS_PRO_CONFIG.put("comment", ui.ttxs_pro_comment.getText() + "");
     TTXS_PRO_CONFIG.put("shipin", ui.ttxs_pro_shipin.isChecked());
     TTXS_PRO_CONFIG.put("wenzhang", ui.ttxs_pro_wenzhang.isChecked());
     TTXS_PRO_CONFIG.put("meiri", ui.ttxs_pro_meiri.isChecked());
@@ -658,6 +471,8 @@ ui.ttxs_pro_reset.click(function () {
     ui.ttxs_pro_is_exit.setChecked(TTXS_PRO_CONFIG.get("is_exit"));
     TTXS_PRO_CONFIG.put("pinglun", true);
     ui.ttxs_pro_pinglun.setChecked(TTXS_PRO_CONFIG.get("pinglun"));
+    TTXS_PRO_CONFIG.put("comment", "全心全意为人民服务|不忘初心，牢记使命|不忘初心，方得始终|永远坚持党的领导|富强、民主、文明、和谐|自由，平等，公正，法治");
+    ui.ttxs_pro_comment.setText(TTXS_PRO_CONFIG.get("comment"));
     TTXS_PRO_CONFIG.put("shipin", true);
     ui.ttxs_pro_shipin.setChecked(TTXS_PRO_CONFIG.get("shipin"));
     TTXS_PRO_CONFIG.put("wenzhang", true);
@@ -702,101 +517,6 @@ ui.ttxs_pro_reset.click(function () {
     toastLog("天天向上pro配置恢复默认！");
 });
 
-// 保存study脚本设置
-ui.study_save.click(function () {
-    STUDY_CONFIG.put("article", ui.study_article.isChecked());
-    STUDY_CONFIG.put("video", ui.study_video.getSelectedItemPosition());
-    STUDY_CONFIG.put("meiri", ui.study_meiri.isChecked());
-    STUDY_CONFIG.put("tiaozhan", ui.study_tiaozhan.isChecked());
-    STUDY_CONFIG.put("checkbox_01", ui.study_checkbox_01.isChecked());
-    STUDY_CONFIG.put("checkbox_02", ui.study_checkbox_02.isChecked());
-    STUDY_CONFIG.put("checkbox_03", ui.study_checkbox_03.isChecked());
-    STUDY_CONFIG.put("shuangren", ui.study_shuangren.isChecked());
-
-    STUDY_CONFIG.put("huakuaidelay", ui.study_huakuaidelay.getText() + "");
-    STUDY_CONFIG.put("select", ui.study_select.getSelectedItemPosition());
-    STUDY_CONFIG.put("selectm", ui.study_selectm.getSelectedItemPosition());
-    STUDY_CONFIG.put("select_01", ui.study_select_01.getSelectedItemPosition());
-    STUDY_CONFIG.put("xianzhi", ui.study_xianzhi.isChecked());
-    STUDY_CONFIG.put("another", ui.study_another.getText() + "");
-    STUDY_CONFIG.put("stronger", ui.study_stronger.getSelectedItemPosition());
-
-    STUDY_CONFIG.put("ssub", ui.study_ssub.getSelectedItemPosition());
-    STUDY_CONFIG.put("diandian", ui.study_diandian.isChecked());
-    STUDY_CONFIG.put("alltime", ui.study_alltime.getText() + "");
-    STUDY_CONFIG.put("time1", ui.study_time1.getText() + "");
-    STUDY_CONFIG.put("time2", ui.study_time2.getText() + "");
-    STUDY_CONFIG.put("Token", ui.study_Token.getText() + "");
-
-    toastLog("STUDY配置保存成功！");
-});
-
-// 重置study脚本设置
-ui.study_reset.click(function () {
-    STUDY_CONFIG.put("article", true);
-    STUDY_CONFIG.put("video", 0);
-    STUDY_CONFIG.put("meiri", true);
-    STUDY_CONFIG.put("tiaozhan", true);
-    STUDY_CONFIG.put("checkbox_01", true);
-    STUDY_CONFIG.put("checkbox_02", true);
-    STUDY_CONFIG.put("checkbox_03", true);
-    STUDY_CONFIG.put("shuangren", true);
-    ui.study_article.setChecked(STUDY_CONFIG.get("article"));
-    ui.study_video.setSelection(STUDY_CONFIG.get("video"));
-    ui.study_meiri.setChecked(STUDY_CONFIG.get("meiri"));
-    ui.study_tiaozhan.setChecked(STUDY_CONFIG.get("tiaozhan"));
-    ui.study_checkbox_01.setChecked(STUDY_CONFIG.get("checkbox_01"));
-    ui.study_checkbox_02.setChecked(STUDY_CONFIG.get("checkbox_02"));
-    ui.study_checkbox_03.setChecked(STUDY_CONFIG.get("checkbox_03"));
-    ui.study_shuangren.setChecked(STUDY_CONFIG.get("shuangren"));
-
-    STUDY_CONFIG.put("huakuaidelay", "300");
-    STUDY_CONFIG.put("select", 0);
-    STUDY_CONFIG.put("selectm", 0);
-    STUDY_CONFIG.put("select_01", 0);
-    STUDY_CONFIG.put("xianzhi", false);
-    STUDY_CONFIG.put("another", "1");
-    STUDY_CONFIG.put("stronger", 0);
-    ui.study_huakuaidelay.setText(STUDY_CONFIG.get("huakuaidelay"));
-    ui.study_select.setSelection(STUDY_CONFIG.get("select"));
-    ui.study_selectm.setSelection(STUDY_CONFIG.get("selectm"));
-    ui.study_select_01.setSelection(STUDY_CONFIG.get("select_01"));
-    ui.study_xianzhi.setChecked(STUDY_CONFIG.get("xianzhi"));
-    ui.study_another.setText(STUDY_CONFIG.get("another"));
-    ui.study_stronger.setSelection(STUDY_CONFIG.get("stronger"));
-
-    STUDY_CONFIG.put("ssub", 0);
-    STUDY_CONFIG.put("diandian", false);
-    STUDY_CONFIG.put("alltime", "2000");
-    STUDY_CONFIG.put("time1", "61");
-    STUDY_CONFIG.put("time2", "6");
-    STUDY_CONFIG.put("Token", "");
-    ui.study_ssub.setSelection(STUDY_CONFIG.get("ssub"));
-    ui.study_diandian.setChecked(STUDY_CONFIG.get("diandian"));
-    ui.study_alltime.setText(STUDY_CONFIG.get("alltime"));
-    ui.study_time1.setText(STUDY_CONFIG.get("time1"));
-    ui.study_time2.setText(STUDY_CONFIG.get("time2"));
-    ui.study_Token.setText(STUDY_CONFIG.get("Token"));
-
-    toastLog("STUDY配置恢复默认！");
-});
-
-ui.study_baidusave.click(function () {
-    check_baidu_api();
-});
-
-ui.study_baidureset.click(function () {
-    BAIDUAPI.put("AK", "");
-    BAIDUAPI.put("SK", "");
-    ui.study_AK.setText(BAIDUAPI.get("AK", ""));
-    ui.study_SK.setText(BAIDUAPI.get("SK", ""));
-    toastLog("百度API恢复默认！");
-});
-
-ui.study_baiduregister.click(function () {
-    app.openUrl("https://cloud.baidu.com/doc/OCR/s/dk3iqnq51");
-});
-
 // 读取脚本设置
 function Initialize() {
     ui.script_chosen.setSelection(GLOBAL_CONFIG.get("script_chosen", 0));
@@ -807,6 +527,7 @@ function Initialize() {
     ui.ttxs_pro_ddtong.setChecked(TTXS_PRO_CONFIG.get("ddtong", false));
     ui.ttxs_pro_is_exit.setChecked(TTXS_PRO_CONFIG.get("is_exit", true));
     ui.ttxs_pro_pinglun.setChecked(TTXS_PRO_CONFIG.get("pinglun", true));
+    ui.ttxs_pro_comment.setText(TTXS_PRO_CONFIG.get("comment", "全心全意为人民服务|不忘初心，牢记使命|不忘初心，方得始终|永远坚持党的领导|富强、民主、文明、和谐|自由，平等，公正，法治"));
     ui.ttxs_pro_shipin.setChecked(TTXS_PRO_CONFIG.get("shipin", true));
     ui.ttxs_pro_wenzhang.setChecked(TTXS_PRO_CONFIG.get("wenzhang", true));
     ui.ttxs_pro_meiri.setChecked(TTXS_PRO_CONFIG.get("meiri", true));
@@ -827,30 +548,6 @@ function Initialize() {
     ui.ttxs_pro_yl_on.setChecked(TTXS_PRO_CONFIG.get("yl_on", true));
     ui.ttxs_pro_yinliang.setText(TTXS_PRO_CONFIG.get("yinliang", "0"));
     ui.ttxs_pro_zhanghao.setText(TTXS_PRO_CONFIG.get("zhanghao", ""));
-
-    ui.study_article.setChecked(STUDY_CONFIG.get("article", true));
-    ui.study_video.setSelection(STUDY_CONFIG.get("video", 0));
-    ui.study_meiri.setChecked(STUDY_CONFIG.get("meiri", true));
-    ui.study_tiaozhan.setChecked(STUDY_CONFIG.get("tiaozhan", true));
-    ui.study_checkbox_01.setChecked(STUDY_CONFIG.get("checkbox_01", true));
-    ui.study_checkbox_02.setChecked(STUDY_CONFIG.get("checkbox_02", true));
-    ui.study_checkbox_03.setChecked(STUDY_CONFIG.get("checkbox_03", true));
-    ui.study_huakuaidelay.setText(STUDY_CONFIG.get("huakuaidelay", "300"));
-    ui.study_shuangren.setChecked(STUDY_CONFIG.get("shuangren", true));
-    ui.study_select.setSelection(STUDY_CONFIG.get("select", 0));
-    ui.study_selectm.setSelection(STUDY_CONFIG.get("selectm", 0));
-    ui.study_select_01.setSelection(STUDY_CONFIG.get("select_01", 0));
-    ui.study_xianzhi.setChecked(STUDY_CONFIG.get("xianzhi", false));
-    ui.study_another.setText(STUDY_CONFIG.get("another", "1"));
-    ui.study_stronger.setSelection(STUDY_CONFIG.get("stronger", 0));
-    ui.study_AK.setText(BAIDUAPI.get("AK", ""));
-    ui.study_SK.setText(BAIDUAPI.get("SK", ""));
-    ui.study_ssub.setSelection(STUDY_CONFIG.get("ssub", 0));
-    ui.study_diandian.setChecked(STUDY_CONFIG.get("diandian", false));
-    ui.study_alltime.setText(STUDY_CONFIG.get("alltime", "2000"));
-    ui.study_time1.setText(STUDY_CONFIG.get("time1", "61"));
-    ui.study_time2.setText(STUDY_CONFIG.get("time2", "6"));
-    ui.study_Token.setText(STUDY_CONFIG.get("Token", ""));
 }
 
 // 检查百度API
